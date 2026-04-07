@@ -14,7 +14,7 @@ public interface CandidateRepository extends JpaRepository<Candidates, Long> {
     // For your main result check
     Optional<Candidates> findByRegistrationNoAndDobAndEmail(
             String registrationNo,
-            String dob,
+            LocalDate dob,
             String email
     );
 

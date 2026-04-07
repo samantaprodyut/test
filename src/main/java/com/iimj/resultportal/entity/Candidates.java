@@ -3,7 +3,8 @@ package com.iimj.resultportal.entity;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.data.annotation.Transient;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
@@ -38,8 +39,7 @@ public class Candidates {
     private String email;
 
     @Column(nullable = false)
-   // @JsonFormat(pattern = "yyyy-MM-dd")
-    private String dob;
+    private LocalDate dob;
 
     @ManyToOne
     @JoinColumn(name = "status", nullable = false)
@@ -53,7 +53,32 @@ public class Candidates {
 
     @Column(name = "is_paid")
     private Boolean isPaid = false;
+    
+    @Column(name = "candidate_current_status")
+    private String candidateCurrentStatus;
+    
+//    @OneToOne(mappedBy = "candidate", cascade = CascadeType.ALL)
+//    private Payment payment;
+    
+    @Column(name = "sex")
+    private String sex;
 
-    @OneToOne(mappedBy = "candidate", cascade = CascadeType.ALL)
-    private Payment payment;
+    @Column(name = "category")
+    private String category;
+
+    @Column(name = "pwd")
+    private boolean isPwd;
+
+    @Column(name = "upload_date")
+    private String uploadDate;
+
+    @Column(name = "mobile_number")
+    private String mobileNumber;
+
+    @Column(name = "waiting_list_no")
+    private String waitingListNo;
+    
+//    
+//    @Transient
+//    private String candidateCurrentStatusDescription;
 }

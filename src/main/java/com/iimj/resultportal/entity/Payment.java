@@ -32,6 +32,9 @@ public class Payment {
     @OneToOne
     @JoinColumn(name = "candidate_id", nullable = false)
     private Candidates candidate;
+    
+    @Column(name = "candidate_reg_id", nullable = false)
+    private String candidateRegId;
 
     @Column(name = "trx_id", nullable = false)
     private String trxId;

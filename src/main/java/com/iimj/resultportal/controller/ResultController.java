@@ -2,6 +2,7 @@ package com.iimj.resultportal.controller;
 
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -93,7 +94,7 @@ public class ResultController {
                     .body(Map.of("message", "Captcha validation failed"));
         }
     	
-        Optional<Candidates> candidateOpt = candidateRepository.findByRegistrationNoAndDobAndEmail(regNo, dob, email);
+        Optional<Candidates> candidateOpt = candidateRepository.findByRegistrationNoAndDobAndEmail(regNo, LocalDate.parse(dob), email);
 
         if (candidateOpt.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -150,6 +151,7 @@ public class ResultController {
             // Save payment
             Payment payment = new Payment();
             payment.setCandidate(c);
+            payment.setCandidateRegId(c.getRegistrationNo());
             payment.setTrxId(trxId);
             payment.setBankName(bankName);
             payment.setAmount(BigDecimal.valueOf(amount));
@@ -157,6 +159,7 @@ public class ResultController {
 
             // Update candidate
             c.setIsPaid(true);
+            c.setCandidateCurrentStatus("102");
             candidateRepository.save(c);
             redisTemplate.opsForValue().set(regNo, c);
 
