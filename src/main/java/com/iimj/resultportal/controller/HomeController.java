@@ -31,6 +31,13 @@ public class HomeController {
         return "index"; // Thymeleaf will look for templates/index.html
     }
     
+    @GetMapping("/mba-hahm")
+    public String mbaHahm(Model model) {
+        model.addAttribute("siteKey", siteKey);
+
+        return "hahm"; // Thymeleaf will look for templates/hahm.html
+    }
+    
     
     @GetMapping("/captcha")
     @ResponseBody

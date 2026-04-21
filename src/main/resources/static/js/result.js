@@ -1,126 +1,243 @@
-document.addEventListener("DOMContentLoaded", () => {
-    // result button
-    document.getElementById("checkResultBtn")
-        .addEventListener("click", checkResult);
+document.addEventListener("DOMContentLoaded", function () {
 
-    // captcha refresh button
-    document.getElementById("refreshCaptchaBtn")
-        .addEventListener("click", refreshCaptcha);
-});
+    // ==============================
+    // CHECK RESULT
+    // ==============================
+    document.getElementById("checkResultBtn").addEventListener("click", function () {
 
-// refresh typed captcha image
-function refreshCaptcha() {
-    const img = document.getElementById("captchaImage");
-    img.src = "/captcha?ts=" + new Date().getTime();
+        const regNo = document.getElementById("registrationNo").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const dob = document.getElementById("dob").value;
+        const captcha = document.getElementById("captchaInput").value.trim();
 
-    document.getElementById("captchaInput").value = "";
-}
+        if (!regNo || !email || !dob || !captcha) {
+            alert("Please fill all fields");
+            return;
+        }
 
-// Check candidate result
-function checkResult() {
-    const regNo = document.getElementById("registrationNo").value;
-    const email = document.getElementById("email").value;
-    const dob = document.getElementById("dob").value;
-	const captchaToken = grecaptcha.getResponse();
-	const captcha = document.getElementById("captchaInput").value;
+        document.getElementById("resultSection").innerHTML =
+            '<div class="text-center mt-4"><div class="spinner-border"></div></div>';
 
+        const url = `/api/result?regNo=${encodeURIComponent(regNo)}&email=${encodeURIComponent(email)}&dob=${encodeURIComponent(dob)}&captcha=${encodeURIComponent(captcha)}`;
 
-
-    if (!regNo || !email || !dob) {
-        alert("Please fill all fields");
-        return;
-    }
-
-	if (!captcha || !captchaToken) {
-	       alert("Please complete captcha verification");
-	       return;
-	   }
-	
-    // Hide login form
-    document.getElementById("checkResultForm").style.display = "none";
-
-	fetch(`/api/result?regNo=${encodeURIComponent(regNo)}
-	&email=${encodeURIComponent(email)}
-	&dob=${encodeURIComponent(dob)}
-	&captcha=${encodeURIComponent(captcha)}
-	&captchaToken=${encodeURIComponent(captchaToken)}`.replace(/\s+/g, ''))
+        fetch(url, {
+            method: "GET",
+            credentials: "include" // ✅ IMPORTANT FOR SESSION
+        })
         .then(res => res.json())
         .then(data => {
-            console.log("Backend response:", data);
 
-            let html = '';
+            // ==============================
+            // CAPTCHA / ERROR HANDLING
+            // ==============================
+            if (data.success === false) {
 
-            if (data.alreadyPaid) {
-                // User has already submitted payment
-                html = `<div class="alert alert-success">
-                            Dear ${data.fullName}, your payment details have been submitted and are under verification.
-                        </div>`;
-            } else {
-                // Normal flow
-                html = `<div class="alert alert-info">
-                            Dear ${data.fullName}, ${data.message}
-                        </div>`;
+                alert(data.message || "Invalid CAPTCHA");
 
-                if (data.showPaymentForm) {
-                    html += `
-                        <button class="btn btn-success mb-3" id="payNowBtn">Pay Now</button>
-                        <div id="paymentForm" style="margin-top:15px;">
-                            <form id="paymentDetailsForm">
-                                <input type="text" class="form-control mb-3" id="trxId" placeholder="Transaction ID" required>
-                                <input type="text" class="form-control mb-3" id="bankName" placeholder="Bank Name" required>
-                                <input type="number" class="form-control mb-3" id="amount" placeholder="Amount" value="${data.amountDue}" required>
-                                <button type="button" class="btn btn-primary w-100" id="submitPaymentBtn">Submit Payment</button>
-                            </form>
-                        </div>
-                    `;
-                }
+                // refresh captcha
+                document.getElementById("captchaImage").src =
+                    "/captcha?ts=" + new Date().getTime();
+
+                // clear input
+                document.getElementById("captchaInput").value = "";
+
+                // remove loader
+                document.getElementById("resultSection").innerHTML = "";
+
+                return; // ⛔ STOP
             }
 
-            document.getElementById("resultSection").innerHTML = html;
+            // ==============================
+            // SHOW RESULT
+            // ==============================
+            document.getElementById("mainContainer").style.display = "none";
+            document.getElementById("backButtonContainer").style.display = "block";
 
-            if (!data.alreadyPaid && data.showPaymentForm) {
-                document.getElementById("payNowBtn").addEventListener("click", () => redirectToPayment(regNo));
-                document.getElementById("submitPaymentBtn").addEventListener("click", () => submitPayment(regNo));
+            let html = `
+            <div class="letter-container">
+                <div class="letter-title">
+                    MBA 2025-27 Batch: Admission Offer Status
+                </div>
+
+                <p><b>Name:</b> ${data.fullName || '-'}</p>
+                <p><b>CAT Registration Number:</b> ${data.candidate.registrationNo || '-'}</p>
+                <p><b>Email:</b> ${data.candidate.email || '-'}</p>
+                <p><b>Category:</b> ${data.candidate.category || '-'}</p>
+				<p><b>Test:</b> ${data.candidate.paymentDeadline || '-'}</p>
+
+                <br/>
+                <p>Dear ${data.candidate.fullName || 'Candidate'},</p>
+            `;
+
+            switch (data.statusId) {
+
+                case 1:
+                    if (data.isPaid) {
+                        html += `
+                        <div class="alert alert-success text-center mt-3">
+                            Payment Already Submitted. Your Payment is under verification!
+                        </div>`;
+                    } else {
+                        html += `
+                        <p><b>Congratulations!</b></p>
+
+                        <div id="paymentForm">
+                            <input class="form-control mb-2" id="trxId" placeholder="Transaction ID">
+                            <input class="form-control mb-2" id="bankName" placeholder="Bank Name">
+                            <input class="form-control mb-2" id="amount" value="${data.amountDue || 50000}">
+
+                            <button class="btn btn-primary w-100" id="submitPaymentBtn">
+                                Submit Payment
+                            </button>
+                        </div>`;
+                    }
+                    break;
+
+                case 8:
+                    html += `
+                    <p>EOI Payment Required</p>
+
+                    <div id="paymentForm">
+                        <input class="form-control mb-2" id="trxId" placeholder="Transaction ID">
+                        <input class="form-control mb-2" id="bankName" placeholder="Bank Name">
+                        <input class="form-control mb-2" id="amount" value="10000">
+
+                        <button class="btn btn-warning w-100" id="submitPaymentBtn">
+                            Submit EOI Payment
+                        </button>
+                    </div>`;
+                    break;
+
+                default:
+                    html += `<p>Entered Details are not available. Please enter proper details.</p>`;
+            }
+
+            html += `</div>`;
+
+            document.getElementById("resultSection").innerHTML = html;
+        })
+        .catch(err => {
+            console.error(err);
+            document.getElementById("resultSection").innerHTML =
+                '<div class="alert alert-danger">Error fetching result</div>';
+        });
+    });
+
+    // ==============================
+    // CAPTCHA REFRESH
+    // ==============================
+    document.getElementById("refreshCaptchaBtn").addEventListener("click", function () {
+        document.getElementById("captchaImage").src =
+            "/captcha?ts=" + new Date().getTime();
+    });
+
+});
+
+
+// ==============================
+// PAYMENT SUBMIT
+// ==============================
+document.addEventListener("click", function (e) {
+
+    if (e.target && e.target.id === "submitPaymentBtn") {
+
+        const trxId = document.getElementById("trxId").value.trim();
+        const bank = document.getElementById("bankName").value.trim();
+        const amount = document.getElementById("amount").value;
+		const regNo = document.getElementById("registrationNo").value.trim();
+		const email = document.getElementById("email").value.trim();
+		const dob = document.getElementById("dob").value;
+        if (!trxId || !bank || !amount) {
+            alert("Please fill all payment details");
+            return;
+        }
+
+        const btn = e.target;
+        btn.disabled = true;
+        btn.innerText = "Submitting...";
+
+        fetch("/api/payment", {
+            method: "POST",
+            credentials: "include", // ✅ GOOD PRACTICE
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                transactionId: trxId,
+                bankName: bank,
+                amount: amount,
+                registrationNo: regNo,
+				email: email,
+				dob: dob
+
+
+            })
+        })
+        .then(res => res.json())
+        .then(response => {
+
+            if (response.success === true) {
+                showOverlay("success", response.message || "Payment completed successfully");
+            } else {
+                showOverlay("failed", response.message || "Payment failed");
+                btn.disabled = false;
+                btn.innerText = "Submit Payment";
             }
         })
         .catch(err => {
             console.error(err);
-            document.getElementById("resultSection").innerHTML = `<div class="alert alert-danger">Error fetching result</div>`;
+            alert("Server error");
+            btn.disabled = false;
+            btn.innerText = "Submit Payment";
         });
-}
-
-// Open external payment URL
-function redirectToPayment(regNo) {
-    const paymentUrl = `https://externalgateway.com/pay?regNo=${regNo}`;
-    window.open(paymentUrl, "_blank");
-}
+    }
+});
 
 
-// Submit manual payment to backend
-function submitPayment(regNo) {
-    const trxId = document.getElementById("trxId").value;
-    const bankName = document.getElementById("bankName").value;
-    const amount = document.getElementById("amount").value;
+// ==============================
+// OVERLAY FUNCTION
+// ==============================
+function showOverlay(status, message) {
 
-    if (!trxId || !bankName || !amount) {
-        alert("Please fill all payment details");
-        return;
+    const overlay = document.getElementById("successOverlay");
+    const title = document.getElementById("overlayTitle");
+    const msg = document.getElementById("overlayMessage");
+    const icon = document.getElementById("overlayIcon");
+
+    overlay.classList.remove("overlay-success", "overlay-failed");
+
+    if (status === "success") {
+        title.innerText = "Payment Successful";
+        icon.innerText = "✔";
+        overlay.classList.add("overlay-success");
+    } else {
+        title.innerText = "Payment Failed";
+        icon.innerText = "✖";
+        overlay.classList.add("overlay-failed");
     }
 
-    fetch('/api/payment', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({regNo, trxId, bankName, amount})
-    })
-    .then(res => res.json())
-    .then(data => {
-        // Show payment confirmation
-        document.getElementById("resultSection").innerHTML = `
-            <div class="alert alert-success">Dear ${data.fullName}, ${data.message}</div>
-        `;
-    })
-    .catch(err => {
-        alert("Payment submission failed");
-        console.error(err);
-    });
+    msg.innerText = message;
+
+    overlay.classList.remove("overlay-hidden");
+    overlay.classList.add("overlay-show");
+}
+
+
+// ==============================
+// OK BUTTON → REDIRECT
+// ==============================
+document.addEventListener("click", function (e) {
+    if (e.target && e.target.id === "okRedirectBtn") {
+        window.location.href = "/";
+    }
+});
+
+
+// ==============================
+// BACK BUTTON
+// ==============================
+function showFormAgain() {
+    document.getElementById("mainContainer").style.display = "block";
+    document.getElementById("resultSection").innerHTML = "";
+    document.getElementById("backButtonContainer").style.display = "none";
 }

@@ -17,6 +17,9 @@ import jakarta.annotation.PostConstruct;
 public class CandidateCacheService {
 
 	 private final Map<String, Candidates> cache = new ConcurrentHashMap<>();
+	 private final Map<String, Candidates> cacheHAHM = new ConcurrentHashMap<>();
+	 private final Map<String, Candidates> cacheABA = new ConcurrentHashMap<>();
+
 
 	    @Autowired
 	    private CandidateRepository repository;

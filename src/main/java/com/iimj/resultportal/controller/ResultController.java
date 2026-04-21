@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import com.iimj.resultportal.entity.Candidates;
 import com.iimj.resultportal.entity.Payment;
 import com.iimj.resultportal.repository.CandidateRepository;
 import com.iimj.resultportal.repository.PaymentRepository;
+import com.iimj.resultportal.service.CandidateCacheService;
 import com.iimj.resultportal.service.CandidateService;
 import com.iimj.resultportal.service.CaptchaService;
 
@@ -50,6 +52,11 @@ public class ResultController {
     @Autowired
     private CaptchaService captchaService; 
     
+    
+    
+    @Autowired
+    private CandidateCacheService candidateCacheService;
+    
     @Value("${recaptcha.site.key}")
     private String siteKey;
     
@@ -60,7 +67,7 @@ public class ResultController {
             @RequestParam("email") String email,
             @RequestParam("dob") String dob,
             @RequestParam("captcha") String captcha,
-            @RequestParam("captchaToken") String captchaToken,
+            //@RequestParam("captchaToken") String captchaToken,
             HttpSession session) {
         
 //    	candidateService.fetchDetailsFromRedis(regNo);
@@ -73,30 +80,43 @@ public class ResultController {
 
         if (sessionCaptcha == null ||
                 !sessionCaptcha.equalsIgnoreCase(captcha)) {
-            return ResponseEntity.badRequest()
-                    .body(Map.of("message", "Invalid typed captcha"));
+        	return ResponseEntity.ok(Map.of(
+        	        "success", false,
+        	        "message", "Invalid CAPTCHA"
+        	));
         }
-    	 // Step 1: Verify captcha first
-    	String sessionCaptchaNew = (String) session.getAttribute("captcha");
-
-    	if (sessionCaptchaNew == null ||
-    	        !sessionCaptchaNew.equalsIgnoreCase(captcha)) {
-    	    return ResponseEntity.badRequest()
-    	            .body(Map.of("message", "Invalid typed captcha"));
-    	}
+        session.removeAttribute("captcha");
+//    	 // Step 1: Verify captcha first
+//    	String sessionCaptchaNew = (String) session.getAttribute("captcha");
+//
+//    	if (sessionCaptchaNew == null ||
+//    	        !sessionCaptchaNew.equalsIgnoreCase(captcha)) {
+//    	    return ResponseEntity.badRequest()
+//    	            .body(Map.of("message", "Invalid typed captcha"));
+//    	}
 
 
     	
-        boolean isCaptchaValid = captchaService.verifyCaptcha(captchaToken);
+//        boolean isCaptchaValid = captchaService.verifyCaptcha(captchaToken);
 
-        if (!isCaptchaValid) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(Map.of("message", "Captcha validation failed"));
-        }
+//        if (!isCaptchaValid) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+//                    .body(Map.of("message", "Captcha validation failed"));
+//        }
     	
+        
+        Candidates c = candidateCacheService.get(regNo, email, LocalDate.parse(dob));
+        
         Optional<Candidates> candidateOpt = candidateRepository.findByRegistrationNoAndDobAndEmail(regNo, LocalDate.parse(dob), email);
-
+        
+        
+        if(Objects.isNull(c)) {
+        	 return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                     .body(Map.of("message", "Candidate not found"));        }
+        
         if (candidateOpt.isEmpty()) {
+        	
+        	
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(Map.of("message", "Candidate not found"));
         }
@@ -105,8 +125,12 @@ public class ResultController {
         CandidateStatus status = candidate.getStatus(); // from DB
 
         Map<String, Object> response = new HashMap<>();
+        response.put("candidate", candidate);
         response.put("registrationNo", candidate.getRegistrationNo());
         response.put("fullName", candidate.getFullName());
+        response.put("email", candidate.getEmail());
+        response.put("dob", candidate.getDob());
+        response.put("category", candidate.getCategory());
         response.put("statusId", status.getId());
         response.put("statusName", status.getName());
         response.put("message", status.getMessage());
@@ -137,16 +161,20 @@ public class ResultController {
     // Submit manual payment
     @PostMapping("/payment")
     public ResponseEntity<Map<String, Object>> savePayment(@RequestBody Map<String, Object> payload) {
-        String regNo = (String) payload.get("regNo");
-        String trxId = (String) payload.get("trxId");
+        String regNo = (String) payload.get("registrationNo");
+        String email = (String) payload.get("email");
+        String dob = (String) payload.get("dob");        
+        String trxId = (String) payload.get("transactionId");
         String bankName = (String) payload.get("bankName");
         Double amount = Double.valueOf(payload.get("amount").toString());
+       
+        Candidates c = candidateCacheService.get(regNo, email, LocalDate.parse(dob));
 
-        Optional<Candidates> optCandidate = candidateRepository.findByRegistrationNo(regNo);
+//        Optional<Candidates> optCandidate = candidateRepository.findByRegistrationNo(regNo);
         Map<String, Object> resp = new HashMap<>();
 
-        if (optCandidate.isPresent()) {
-            Candidates c = optCandidate.get();
+        if (!Objects.isNull(c)) {
+//            Candidates c = optCandidate.get();
 
             // Save payment
             Payment payment = new Payment();
@@ -160,18 +188,30 @@ public class ResultController {
             // Update candidate
             c.setIsPaid(true);
             c.setCandidateCurrentStatus("102");
-            candidateRepository.save(c);
-            redisTemplate.opsForValue().set(regNo, c);
-
-
+            Candidates updatedCandidate= candidateRepository.save(c);
+            
+            // Update the cache by removing the old and updating the new
+            updateCache(updatedCandidate);
+            resp.put("candidate", c);
+            resp.put("success", true);
             resp.put("fullName", c.getFullName());
-            resp.put("message", "Your payment details are submitted, subject to verification.");
+            resp.put("message", "Dear " + c.getFullName() + ", Your payment details are submitted, subject to verification.");
         } else {
-            resp.put("fullName", "Candidate");
+            resp.put("success", false);
+            resp.put("fullName", regNo);
             resp.put("message", "Candidate not found, payment cannot be recorded.");
         }
 
         return ResponseEntity.ok(resp);
+    }
+    
+    
+    /*
+     * Method to update the cache post payment for MBA.
+     */
+    private void updateCache(Candidates c) {
+    	candidateCacheService.remove(c);
+    	candidateCacheService.update(c);
     }
 
 }

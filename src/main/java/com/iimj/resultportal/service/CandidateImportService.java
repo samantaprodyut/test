@@ -60,7 +60,7 @@ public class CandidateImportService {
 
 	    List<Candidates> batchList = new ArrayList<>(BATCH_SIZE);
 
-	    // 🔹 Preload status (avoid DB hit per row)
+	    // Preload status (avoid DB hit per row)
 	    Map<Integer, CandidateStatus> statusMap = candidateStatusRepository.findAll()
 	            .stream()
 	            .collect(Collectors.toMap(CandidateStatus::getId, s -> s));
@@ -94,9 +94,7 @@ public class CandidateImportService {
 	                String statusStr = getCellValue(row, 8, formatter);
 	                String mobileNumber = getCellValue(row, 9, formatter);
 	                String waitingList = getCellValue(row, 10, formatter);
-	                String feePaid = getCellValue(row, 11, formatter);
-
-	              
+	                String feePaid = getCellValue(row, 11, formatter);	              
 
 	                // 🔹 Map entity
 	                c.setRegistrationNo(regNo);
