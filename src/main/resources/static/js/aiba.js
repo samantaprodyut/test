@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const email = document.getElementById("email").value.trim();
         const dob = document.getElementById("dob").value;
         const captcha = document.getElementById("captchaInput").value.trim();
-		const type = 'MBA';
+		const type = 'AIBA';
 
         if (!regNo || !email || !dob || !captcha) {
             alert("Please fill all fields");
@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			<div class="card shadow p-4 letter-container">
 
 			    <div class="text-center mb-3">
-			        <h5>MBA 2025-27 Batch: Admission Offer Status</h5>
+			        <h5>AIBA 2025-27 Batch: Admission Offer Status</h5>
 			    </div>
 
 				<div class="mb-3">
@@ -326,7 +326,7 @@ document.addEventListener("click", function (e) {
                 registrationNo: regNo,
 				email: email,
 				dob: dob,
-				type:"MBA"
+				type:"AIBA"
 
             })
         })

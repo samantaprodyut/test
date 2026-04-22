@@ -1,26 +1,37 @@
+document.addEventListener("DOMContentLoaded", function () {
 
-(function () {
-    const searchInput = document.getElementById('studentSearch');
-    const table = document.getElementById('studentsTable');
+    const form = document.getElementById("uploadForm");
+    const modal = new bootstrap.Modal(document.getElementById("uploadModal"));
 
-    if (!searchInput || !table) {
-        return;
-    }
+    form.addEventListener("submit", async function (e) {
+        e.preventDefault();
 
-    const tbody = table.querySelector('tbody');
+        modal.show();
 
-    searchInput.addEventListener('input', function () {
-        const q = this.value.trim().toLowerCase();
+        try {
+            const response = await fetch(form.action, {
+                method: "POST",
+                body: new FormData(form)
+            });
 
-        Array.from(tbody.rows).forEach(row => {
-            const regNo = (row.cells[1].innerText || '').toLowerCase();
-            const name = (row.cells[2].innerText || '').toLowerCase();
+            console.log("STATUS:", response.status);
 
-            if (!q || regNo.includes(q) || name.includes(q)) {
-                row.style.display = '';
+            const text = await response.text();
+            console.log("RESPONSE:", text);
+
+            modal.hide();
+
+            if (response.ok) {
+                alert("SUCCESS: " + text);
             } else {
-                row.style.display = 'none';
+                alert("FAILED: " + text);
             }
-        });
+
+        } catch (err) {
+            modal.hide();
+            console.error("FETCH ERROR:", err);
+            alert("FETCH ERROR: " + err.message);
+        }
     });
-})();
+
+});

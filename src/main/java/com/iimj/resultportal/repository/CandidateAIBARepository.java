@@ -10,28 +10,28 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.iimj.resultportal.entity.Candidates;
+import com.iimj.resultportal.entity.CandidatesAIBA;
 
 @Repository
-public interface CandidateRepository extends JpaRepository<Candidates, Long> {
+public interface CandidateAIBARepository extends JpaRepository<CandidatesAIBA, Long> {
 
     // For your main result check
-    Optional<Candidates> findByRegistrationNoAndDobAndEmail(
+    Optional<CandidatesAIBA> findByRegistrationNoAndDobAndEmail(
             String registrationNo,
             LocalDate dob,
             String email
     );
 
     // Optional: fetch by registration number
-    Optional<Candidates> findByRegistrationNo(String registrationNo);
+    Optional<CandidatesAIBA> findByRegistrationNo(String registrationNo);
     
-    Page<Candidates> findAll(Pageable pageable);
+    Page<CandidatesAIBA> findAll(Pageable pageable);
 
-    Page<Candidates> findByRegistrationNoContainingIgnoreCaseOrFullNameContainingIgnoreCase(
+    Page<CandidatesAIBA> findByRegistrationNoContainingIgnoreCaseOrFullNameContainingIgnoreCase(
             String regNo, String name, Pageable pageable);
     
     
     @Modifying
-    @Query(value = "TRUNCATE TABLE candidates", nativeQuery = true)
+    @Query(value = "TRUNCATE TABLE candidates_aiba", nativeQuery = true)
     void truncateTable();
 }

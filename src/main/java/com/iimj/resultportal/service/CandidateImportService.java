@@ -1,30 +1,30 @@
 package com.iimj.resultportal.service;
 
-
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.DataFormatter;
-import org.apache.poi.ss.usermodel.DateUtil;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.iimj.resultportal.entity.CandidateStatus;
+import com.iimj.resultportal.entity.CandidateStatusAIBA;
+import com.iimj.resultportal.entity.CandidateStatusHAHM;
 import com.iimj.resultportal.entity.Candidates;
+import com.iimj.resultportal.entity.CandidatesAIBA;
+import com.iimj.resultportal.entity.CandidatesHAHM;
+import com.iimj.resultportal.repository.CandidateAIBARepository;
+import com.iimj.resultportal.repository.CandidateHAHMRepository;
 import com.iimj.resultportal.repository.CandidateRepository;
+import com.iimj.resultportal.repository.CandidateStatusAIBARepository;
+import com.iimj.resultportal.repository.CandidateStatusHAHMRepository;
 import com.iimj.resultportal.repository.CandidateStatusRepository;
 
 import jakarta.persistence.EntityManager;
@@ -32,171 +32,330 @@ import jakarta.persistence.PersistenceContext;
 
 @Service
 public class CandidateImportService {
-	
+
 	@PersistenceContext
 	private EntityManager entityManager;
 
 	private final CandidateRepository candidateRepository;
+	private final CandidateHAHMRepository candidateHAHMRepository;
+	private final CandidateAIBARepository candidateAIBARepository;
+
 	private final CandidateStatusRepository candidateStatusRepository;
+	private final CandidateStatusHAHMRepository candidateStatusHAHMRepository;
+	private final CandidateStatusAIBARepository candidateStatusAIBARepository;
+
 
 	public CandidateImportService(CandidateRepository candidateRepository,
-			CandidateStatusRepository candidateStatusRepository) {
+			CandidateStatusRepository candidateStatusRepository,
+			CandidateStatusHAHMRepository candidateStatusHAHMRepository,
+			CandidateHAHMRepository candidateHAHMRepository,
+			CandidateAIBARepository candidateAIBARepository,
+			CandidateStatusAIBARepository candidateStatusAIBARepository) {
+
 		this.candidateRepository = candidateRepository;
 		this.candidateStatusRepository = candidateStatusRepository;
+		this.candidateStatusHAHMRepository = candidateStatusHAHMRepository;
+		this.candidateHAHMRepository = candidateHAHMRepository;
+		this.candidateAIBARepository=candidateAIBARepository;
+		this.candidateStatusAIBARepository=candidateStatusAIBARepository;
 	}
 
 	@Transactional
-	public void importFromExcel(MultipartFile file) throws Exception {
+	public void importFromExcel(MultipartFile file, String type) throws Exception {
 
-	    if (file.isEmpty()) {
-	        throw new IllegalArgumentException("Uploaded file is empty");
-	    }
-	    
-	    System.out.println("<--start delete-->");
-	    candidateRepository.deleteAllInBatch();
-	    System.out.println("<--end delete-->");
+		if (file.isEmpty()) {
+			throw new IllegalArgumentException("Uploaded file is empty");
+		}
 
-	    final int BATCH_SIZE = 500;
+		final int BATCH_SIZE = 500;
+		DataFormatter formatter = new DataFormatter();
+		int processed = 0;
 
-	    List<Candidates> batchList = new ArrayList<>(BATCH_SIZE);
+		try (InputStream is = file.getInputStream(); Workbook workbook = WorkbookFactory.create(is)) {
 
-	    // Preload status (avoid DB hit per row)
-	    Map<Integer, CandidateStatus> statusMap = candidateStatusRepository.findAll()
-	            .stream()
-	            .collect(Collectors.toMap(CandidateStatus::getId, s -> s));
+			Sheet sheet = workbook.getSheetAt(0);
 
-	    DataFormatter formatter = new DataFormatter();
-	    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+			// ========================= MBA =========================
+			if ("MBA".equalsIgnoreCase(type)) {
 
-	    int processed = 0;
+//                candidateRepository.deleteAllInBatch();
+				candidateRepository.truncateTable();
+				Map<Integer, CandidateStatus> statusMap = candidateStatusRepository.findAll().stream()
+						.collect(Collectors.toMap(CandidateStatus::getId, s -> s));
 
-	    try (InputStream is = file.getInputStream();
-	         Workbook workbook = WorkbookFactory.create(is)) {
+				List<Candidates> batchList = new ArrayList<>(BATCH_SIZE);
 
-	        Sheet sheet = workbook.getSheetAt(0);
+				for (int i = 1; i <= sheet.getLastRowNum(); i++) {
 
-	        for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+					Row row = sheet.getRow(i);
+					if (row == null)
+						continue;
 
-	            Row row = sheet.getRow(i);
-	            if (row == null) continue;
+					try {
+						Candidates c = mapMBA(row, formatter);
 
-	            try {
-	                Candidates c = new Candidates();
+						String statusStr = getCellValue(row, 8, formatter);
+						if (!statusStr.isEmpty()) {
+							CandidateStatus status = statusMap.get(Integer.valueOf(statusStr));
+							if (status == null) {
+								throw new IllegalArgumentException("Invalid status: " + statusStr);
+							}
+							c.setStatus(status);
+						}
 
-	                String regNo = getCellValue(row, 0, formatter);
-	                String email = getCellValue(row, 1, formatter);
-	                String fullName = getCellValue(row, 2, formatter);
-	                String sex = getCellValue(row, 3, formatter);
-	                String category = getCellValue(row, 4, formatter);
-	                LocalDate dobStr = getDateCellValue(row, 5);
-	                String isPwd = getCellValue(row, 6, formatter);
-	                LocalDate uploadDate = getDateCellValue(row, 7);;
-	                String statusStr = getCellValue(row, 8, formatter);
-	                String mobileNumber = getCellValue(row, 9, formatter);
-	                String waitingList = getCellValue(row, 10, formatter);
-	                String feePaid = getCellValue(row, 11, formatter);	              
+						batchList.add(c);
+						processed++;
 
-	                // 🔹 Map entity
-	                c.setRegistrationNo(regNo);
-	                c.setEmail(email);
-	                c.setFullName(fullName);
-	                c.setSex(sex);
-	                c.setCategory(category);
-	                c.setDob(dobStr);
-	                c.setAmountDue(BigDecimal.valueOf(500));
-	                c.setPaymentDeadline("2026-01-01");
-	                c.setIsPaid(false);
-	                c.setPwd("1".equalsIgnoreCase(isPwd));
-	                c.setUploadDate(uploadDate.toString());
-	                c.setMobileNumber(mobileNumber);
-	                c.setWaitingListNo(waitingList);
+						if (batchList.size() == BATCH_SIZE) {
+							flushMBA(batchList);
+						}
 
-	                // 🔹 Fast status lookup
-	                if (!statusStr.isEmpty()) {
-	                    CandidateStatus status = statusMap.get(Integer.valueOf(statusStr));
-	                    if (status == null) {
-	                        throw new IllegalArgumentException("Invalid status: " + statusStr);
-	                    }
-	                    c.setStatus(status);
-	                }
+					} catch (Exception ex) {
+						System.err.println("Error at row " + (i + 1) + ": " + ex.getMessage());
+					}
+				}
 
-	                batchList.add(c);
-	                processed++;
+				flushMBA(batchList);
+			}
 
-	                // 🔹 Batch flush
-	                if (processed % BATCH_SIZE == 0) {
-	                    candidateRepository.saveAll(batchList);
-	                    candidateRepository.flush();
+			// ========================= HAHM =========================
+			else if ("HAHM".equalsIgnoreCase(type)) {
 
-	                    entityManager.clear(); // VERY IMPORTANT
-	                    batchList.clear();
+				candidateHAHMRepository.deleteAllInBatch();
 
-	                    System.out.println("Processed: " + processed);
-	                }
+				Map<Integer, CandidateStatusHAHM> statusMap = candidateStatusHAHMRepository.findAll().stream()
+						.collect(Collectors.toMap(CandidateStatusHAHM::getId, s -> s));
 
-	            } catch (Exception rowEx) {
-	                // 🔹 Log and skip bad row (don’t fail full import)
-	                System.err.println("Error at row " + (i + 1) + ": " + rowEx.getMessage());
-	            }
-	        }
+				List<CandidatesHAHM> batchList = new ArrayList<>(BATCH_SIZE);
 
-	        // 🔹 Save remaining
-	        if (!batchList.isEmpty()) {
-	            candidateRepository.saveAll(batchList);
-	            candidateRepository.flush();
-	            entityManager.clear();
-	        }
-	    }
+				for (int i = 1; i <= sheet.getLastRowNum(); i++) {
 
-	    System.out.println("Import completed. Total processed: " + processed);
+					Row row = sheet.getRow(i);
+					if (row == null)
+						continue;
+
+					try {
+						CandidatesHAHM c = mapHAHM(row, formatter);
+
+						String statusStr = getCellValue(row, 8, formatter);
+						if (!statusStr.isEmpty()) {
+							CandidateStatusHAHM status = statusMap.get(Integer.valueOf(statusStr));
+							if (status == null) {
+								throw new IllegalArgumentException("Invalid status: " + statusStr);
+							}
+							c.setStatus(status);
+						}
+
+						batchList.add(c);
+						processed++;
+
+						if (batchList.size() == BATCH_SIZE) {
+							flushHAHM(batchList);
+						}
+
+					} catch (Exception ex) {
+						System.err.println("Error at row " + (i + 1) + ": " + ex.getMessage());
+					}
+				}
+
+				flushHAHM(batchList);
+			}
+			
+			// ========================= AIBA =========================
+
+			else if ("AIBA".equalsIgnoreCase(type)) {
+
+				candidateAIBARepository.truncateTable();
+				Map<Integer, CandidateStatusAIBA> statusMap = candidateStatusAIBARepository.findAll().stream()
+						.collect(Collectors.toMap(CandidateStatusAIBA::getId, s -> s));
+
+				List<CandidatesAIBA> batchList = new ArrayList<>(BATCH_SIZE);
+
+				for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+
+					Row row = sheet.getRow(i);
+					if (row == null)
+						continue;
+
+					try {
+						CandidatesAIBA c = mapAIBA(row, formatter);
+
+						String statusStr = getCellValue(row, 8, formatter);
+						if (!statusStr.isEmpty()) {
+							CandidateStatusAIBA status = statusMap.get(Integer.valueOf(statusStr));
+							if (status == null) {
+								throw new IllegalArgumentException("Invalid status: " + statusStr);
+							}
+							c.setStatus(status);
+						}
+
+						batchList.add(c);
+						processed++;
+
+						if (batchList.size() == BATCH_SIZE) {
+							flushAIBA(batchList);
+						}
+
+					} catch (Exception ex) {
+						System.err.println("Error at row " + (i + 1) + ": " + ex.getMessage());
+					}
+				}
+
+				flushAIBA(batchList);
+			}
+
+
+			System.out.println("Import completed. Total processed: " + processed);
+		}
+	}
+
+	// ===================== MBA MAPPER =====================
+	private Candidates mapMBA(Row row, DataFormatter formatter) {
+
+		Candidates c = new Candidates();
+
+		c.setRegistrationNo(getCellValue(row, 0, formatter));
+		c.setEmail(getCellValue(row, 1, formatter));
+		c.setFullName(getCellValue(row, 2, formatter));
+		c.setSex(getCellValue(row, 3, formatter));
+		c.setCategory(getCellValue(row, 4, formatter));
+		c.setDob(getDateCellValue(row, 5));
+
+		c.setAmountDue(BigDecimal.valueOf(500));
+		c.setPaymentDeadline("2026-01-01");
+		c.setIsPaid(false);
+
+		c.setPwd("1".equalsIgnoreCase(getCellValue(row, 6, formatter)));
+
+		LocalDate uploadDate = getDateCellValue(row, 7);
+		c.setUploadDate(uploadDate != null ? uploadDate.toString() : null);
+
+		c.setMobileNumber(getCellValue(row, 9, formatter));
+		c.setWaitingListNo(getCellValue(row, 10, formatter));
+
+		return c;
+	}
+
+	// ===================== HAHM MAPPER =====================
+	private CandidatesHAHM mapHAHM(Row row, DataFormatter formatter) {
+
+		CandidatesHAHM c = new CandidatesHAHM();
+
+		c.setRegistrationNo(getCellValue(row, 0, formatter));
+		c.setEmail(getCellValue(row, 1, formatter));
+		c.setFullName(getCellValue(row, 2, formatter));
+		c.setSex(getCellValue(row, 3, formatter));
+		c.setCategory(getCellValue(row, 4, formatter));
+		c.setDob(getDateCellValue(row, 5));
+
+		c.setAmountDue(BigDecimal.valueOf(500));
+		c.setPaymentDeadline("2026-01-01");
+		c.setIsPaid(false);
+
+		c.setPwd("1".equalsIgnoreCase(getCellValue(row, 6, formatter)));
+
+		LocalDate uploadDate = getDateCellValue(row, 7);
+		c.setUploadDate(uploadDate != null ? uploadDate.toString() : null);
+
+		c.setMobileNumber(getCellValue(row, 9, formatter));
+		c.setWaitingListNo(getCellValue(row, 10, formatter));
+
+		return c;
 	}
 	
+	
+	// ===================== AIBA MAPPER =====================
+		private CandidatesAIBA mapAIBA(Row row, DataFormatter formatter) {
+
+			CandidatesAIBA c = new CandidatesAIBA();
+
+			c.setRegistrationNo(getCellValue(row, 0, formatter));
+			c.setEmail(getCellValue(row, 1, formatter));
+			c.setFullName(getCellValue(row, 2, formatter));
+			c.setSex(getCellValue(row, 3, formatter));
+			c.setCategory(getCellValue(row, 4, formatter));
+			c.setDob(getDateCellValue(row, 5));
+
+			c.setAmountDue(BigDecimal.valueOf(500));
+			c.setPaymentDeadline("2026-01-01");
+			c.setIsPaid(false);
+
+			c.setPwd("1".equalsIgnoreCase(getCellValue(row, 6, formatter)));
+
+			LocalDate uploadDate = getDateCellValue(row, 7);
+			c.setUploadDate(uploadDate != null ? uploadDate.toString() : null);
+
+			c.setMobileNumber(getCellValue(row, 9, formatter));
+			c.setWaitingListNo(getCellValue(row, 10, formatter));
+
+			return c;
+		}
+
+	// ===================== FLUSH METHODS =====================
+	private void flushMBA(List<Candidates> batchList) {
+		if (batchList.isEmpty())
+			return;
+
+		candidateRepository.saveAll(batchList);
+		candidateRepository.flush();
+		entityManager.clear();
+		batchList.clear();
+	}
+
+	private void flushHAHM(List<CandidatesHAHM> batchList) {
+		if (batchList.isEmpty())
+			return;
+
+		candidateHAHMRepository.saveAll(batchList);
+		candidateHAHMRepository.flush();
+		entityManager.clear();
+		batchList.clear();
+	}
+	
+	private void flushAIBA(List<CandidatesAIBA> batchList) {
+		if (batchList.isEmpty())
+			return;
+
+		candidateAIBARepository.saveAll(batchList);
+		candidateAIBARepository.flush();
+		entityManager.clear();
+		batchList.clear();
+	}
+
+	// ===================== UTIL =====================
 	private String getCellValue(Row row, int index, DataFormatter formatter) {
-	    Cell cell = row.getCell(index);
-	    if (cell == null) return "";
-	    return formatter.formatCellValue(cell).trim();
+		Cell cell = row.getCell(index);
+		if (cell == null)
+			return "";
+		return formatter.formatCellValue(cell).trim();
 	}
-	
-	
-	private LocalDate parseDate(String value) {
-	    if (value == null || value.isEmpty()) return null;
 
-	    DateTimeFormatter[] formatters = {
-	        DateTimeFormatter.ofPattern("dd/MM/yyyy"),
-	        DateTimeFormatter.ofPattern("dd-MM-yyyy"),
-	        DateTimeFormatter.ofPattern("yyyy-MM-dd"),
-	        DateTimeFormatter.ofPattern("MM/dd/yyyy"),
-	        DateTimeFormatter.ofPattern("dd MMM yyyy"),
-	        DateTimeFormatter.ofPattern("dd-MMM-yyyy")
-	    };
-
-	    for (DateTimeFormatter formatter : formatters) {
-	        try {
-	            return LocalDate.parse(value, formatter);
-	        } catch (Exception ignored) {}
-	    }
-
-	    throw new IllegalArgumentException("Invalid date format: " + value);
-	}
-	
 	private LocalDate getDateCellValue(Row row, int index) {
-	    Cell cell = row.getCell(index);
-	    if (cell == null) return null;
+		Cell cell = row.getCell(index);
+		if (cell == null)
+			return null;
 
-	    try {
-	        // ✅ Excel numeric date (most common & safest)
-	        if (cell.getCellType() == CellType.NUMERIC && DateUtil.isCellDateFormatted(cell)) {
-	            return cell.getLocalDateTimeCellValue().toLocalDate();
-	        }
+		try {
+			if (cell.getCellType() == CellType.NUMERIC && DateUtil.isCellDateFormatted(cell)) {
+				return cell.getLocalDateTimeCellValue().toLocalDate();
+			}
 
-	        // ✅ String date
-	        String value = cell.toString().trim();
-	        if (value.isEmpty()) return null;
+			String value = cell.toString().trim();
+			if (value.isEmpty())
+				return null;
 
-	        return parseDate(value);
+			return parseDate(value);
 
-	    } catch (Exception e) {
-	        throw new IllegalArgumentException("Invalid date at column " + index + ": " + cell.toString());
-	    }
-}
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Invalid date at column " + index + ": " + cell);
+		}
+	}
+
+	private LocalDate parseDate(String value) {
+		try {
+			return LocalDate.parse(value);
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Invalid date format: " + value);
+		}
+	}
 }

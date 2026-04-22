@@ -39,6 +39,13 @@ public class HomeController {
     }
     
     
+    @GetMapping("/mba-aiba")
+    public String mbaAiba(Model model) {
+        model.addAttribute("siteKey", siteKey);
+
+        return "aiba"; // Thymeleaf will look for templates/aiba.html
+    }
+    
     @GetMapping("/captcha")
     @ResponseBody
     public void captcha(HttpServletResponse response,

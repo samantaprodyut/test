@@ -21,9 +21,9 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "payments_hahm")
+@Table(name = "payments_hahm_aiba")
 @Data
-public class PaymentHAHM {
+public class PaymentAIBA {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +31,7 @@ public class PaymentHAHM {
 
     @OneToOne
     @JoinColumn(name = "candidate_id", nullable = false)
-    private CandidatesHAHM candidate;
+    private CandidatesAIBA candidate;
     
     @Column(name = "candidate_reg_id", nullable = false)
     private String candidateRegId;

@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const email = document.getElementById("email").value.trim();
         const dob = document.getElementById("dob").value;
         const captcha = document.getElementById("captchaInput").value.trim();
-		const type = 'MBA';
+		const type = 'HAHM';
 
         if (!regNo || !email || !dob || !captcha) {
             alert("Please fill all fields");
@@ -326,7 +326,7 @@ document.addEventListener("click", function (e) {
                 registrationNo: regNo,
 				email: email,
 				dob: dob,
-				type:"MBA"
+				type:"HAHM"
 
             })
         })

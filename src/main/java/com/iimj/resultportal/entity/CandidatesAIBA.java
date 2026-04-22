@@ -20,10 +20,10 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name = "candidates_hahm")
+@Table(name = "candidates_aiba")
 @Data
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class CandidatesHAHM {
+public class CandidatesAIBA {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,7 +43,7 @@ public class CandidatesHAHM {
 
     @ManyToOne
     @JoinColumn(name = "status", nullable = false)
-    private CandidateStatusHAHM status;
+    private CandidateStatusAIBA status;
 
     @Column(name = "amount_due")
     private BigDecimal amountDue;
