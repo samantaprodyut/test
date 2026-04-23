@@ -1,0 +1,11 @@
+tunnel: result-app
+credentials-file: C:\Users\Administrator\.cloudflared\0f5e20f2-e17b-40c8-a6a6-fc8452304a21.json
+
+protocol: http2
+
+ingress:
+  - hostname: testresult1.iimj.ac.in
+    service: http://localhost:8080
+  - service: http_status:404
+
+
