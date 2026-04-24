@@ -49,7 +49,6 @@ public class ResultController {
 	@Autowired
 	private CandidateHAHMRepository candidateHAHMRepository;
 	
-	
 	@Autowired
 	private CandidateAIBARepository candidateAIBARepository;
 
@@ -68,8 +67,6 @@ public class ResultController {
 	@Value("${recaptcha.site.key}")
 	private String siteKey;
 	
-	
-	
 	@GetMapping("/result")
 	public ResponseEntity<?> checkResultNew(
 	        @RequestParam("regNo") String regNo,
@@ -78,6 +75,8 @@ public class ResultController {
 	        @RequestParam("captcha") String captcha,
 	        @RequestParam("type") String type,
 	        HttpSession session) {
+
+		System.out.println("<--Hit-->");
 
 	    // CAPTCHA validation (only here)
 	    if (!validateCaptcha(session, captcha)) {
@@ -149,6 +148,7 @@ public class ResultController {
 	private Map<String, Object> getAIBADetails(String regNo, String email, String dob) {
 
 	    CandidatesAIBA c = candidateCacheService.getAIBA(regNo, email, LocalDate.parse(dob));
+
 
 	    if (Objects.isNull(c)) {
 	        return Map.of(

@@ -1,19 +1,17 @@
-<!-- src/main/resources/templates/fragments/header.html -->
 <div th:fragment="header">
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4 border-bottom">
-        <div class="container d-flex align-items-center">
+        <div class="container d-flex justify-content-between align-items-center">
 
-            <!-- Logo + Title -->
-            <a class="navbar-brand d-flex align-items-center" href="#">
-                <img src="/images/iimj-logo.png" alt="IIM Jammu Logo" 
-                     style="height:50px; margin-right:12px;">
+            <!-- Left: Logo -->
+            <div class="d-flex align-items-center">
+                <img src="/images/iimj-logo.png" alt="IIM Jammu Logo"
+                     class="header-logo">
+            </div>
 
-					 <div class="text-right">
-					     <span style="font-size:20px; font-weight:600; color:#0d6efd;">
-					         Result Portal
-					     </span>
-					 </div>
-            </a>
+            <!-- Right: Result Portal -->
+            <div class="text-end">
+                <span class="header-title">Result Portal</span>
+            </div>
 
         </div>
     </nav>
