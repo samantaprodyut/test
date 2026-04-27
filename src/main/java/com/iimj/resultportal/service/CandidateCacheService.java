@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.iimj.resultportal.controller.AdminController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +26,7 @@ public class CandidateCacheService {
 	 private final Map<String, Candidates> cache = new ConcurrentHashMap<>();
 	 private final Map<String, CandidatesHAHM> cacheHAHM = new ConcurrentHashMap<>();
 	 private final Map<String, CandidatesAIBA> cacheAIBA = new ConcurrentHashMap<>();
+	 private static final Logger logger = LoggerFactory.getLogger(CandidateCacheService.class);
 
 
 	    @Autowired
@@ -60,12 +64,11 @@ public class CandidateCacheService {
 	            cacheAIBA.put(key, c);
 	        }
 
-
 	        long end = System.currentTimeMillis();
-	        System.out.println("Cache MBA loaded: " + cache.size() + " records in " + (end - start) + " ms");
-	        System.out.println("Cache HAHM loaded: " + cacheHAHM.size() + " records in " + (end - start) + " ms");
-	        System.out.println("Cache AIBA loaded: " + cacheAIBA.size() + " records in " + (end - start) + " ms");
 
+			logger.info("Cache MBA loaded: {} records in {} ms", cache.size(), (end - start));
+			logger.info("Cache HAHM loaded: {} records in {} ms", cacheHAHM.size(), (end - start));
+			logger.info("Cache AIBA loaded: {} records in {} ms", cacheAIBA.size(), (end - start));
 	    }
 
 	    // ---------- Fetch Candidates----------

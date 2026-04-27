@@ -5,11 +5,14 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +24,10 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class HomeController {
 
-	 @Value("${recaptcha.site.key}")
+    @Autowired
+    private StringRedisTemplate redisTemplate;
+
+    @Value("${recaptcha.site.key}")
 	    private String siteKey;
 	
     @GetMapping("/")
@@ -72,6 +78,15 @@ public class HomeController {
 
         // ✅ save in session
         session.setAttribute("captcha", captcha.toString());
+
+        // 🔥 IMPORTANT CHANGE: store in Redis (Garnet)
+        String sessionId = session.getId();
+
+        redisTemplate.opsForValue().set(
+                "CAPTCHA:" + sessionId,
+                captcha.toString(),
+                Duration.ofMinutes(5)
+        );
 
         g.setFont(new Font("Arial", Font.BOLD, 30));
 

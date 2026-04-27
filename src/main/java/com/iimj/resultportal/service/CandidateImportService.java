@@ -8,8 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.iimj.resultportal.controller.AdminController;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,6 +35,9 @@ import jakarta.persistence.PersistenceContext;
 
 @Service
 public class CandidateImportService {
+
+	private static final Logger logger = LoggerFactory.getLogger(CandidateImportService.class);
+
 
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -111,7 +117,7 @@ public class CandidateImportService {
 						}
 
 					} catch (Exception ex) {
-						System.err.println("Error at row " + (i + 1) + ": " + ex.getMessage());
+						logger.error("Error at row " + (i + 1) + ": {}",ex.getMessage());
 					}
 				}
 
@@ -154,7 +160,7 @@ public class CandidateImportService {
 						}
 
 					} catch (Exception ex) {
-						System.err.println("Error at row " + (i + 1) + ": " + ex.getMessage());
+						logger.error("Error at row " + (i + 1) + ": {}",ex.getMessage());
 					}
 				}
 
@@ -197,15 +203,13 @@ public class CandidateImportService {
 						}
 
 					} catch (Exception ex) {
-						System.err.println("Error at row " + (i + 1) + ": " + ex.getMessage());
+						logger.error("Error at row " + (i + 1) + ": {}",ex.getMessage());
 					}
 				}
 
 				flushAIBA(batchList);
 			}
-
-
-			System.out.println("Import completed. Total processed: " + processed);
+			logger.info("Import completed. Total processed: {}",processed);
 		}
 	}
 

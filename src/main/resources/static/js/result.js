@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
 
+
+
     // ==============================
     // CHECK RESULT
     // ==============================
@@ -12,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const type = 'MBA';
 
         if (!regNo || !email || !dob || !captcha) {
-            alert("Please fill all fields");
+            showAlert("Please fill all fields");
             return;
         }
 
@@ -33,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 // ==============================
                 if (data.success === false) {
 
-                    alert(data.message || "Invalid CAPTCHA");
+                    showAlert(data.message || "Invalid CAPTCHA...!");
 
                     // refresh captcha
                     document.getElementById("captchaImage").src =
@@ -400,7 +402,7 @@ document.addEventListener("DOMContentLoaded", function() {
             .catch(err => {
                 console.error(err);
                 document.getElementById("resultSection").innerHTML =
-                    '<div class="alert alert-danger">Error fetching result</div>';
+                    '<div class="alert alert-danger">No candidate data found...!!!</div>';
             });
     });
 
@@ -512,6 +514,16 @@ document.addEventListener("click", function(e) {
         window.location.href = "/";
     }
 });
+
+// ==============================
+// SHOW ALERT BUTTON
+// ==============================
+function showAlert(message) {
+    document.getElementById("alertMessage").innerText = message;
+
+    const modal = new bootstrap.Modal(document.getElementById("customAlertModal"));
+    modal.show();
+}
 
 
 // ==============================

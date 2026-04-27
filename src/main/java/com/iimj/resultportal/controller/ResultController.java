@@ -8,9 +8,12 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,10 +66,16 @@ public class ResultController {
 
 	@Autowired
 	private CandidateCacheService candidateCacheService;
+
+	@Autowired
+	private StringRedisTemplate redisTemplate;
 	
 	@Value("${recaptcha.site.key}")
 	private String siteKey;
-	
+
+	private static final Logger logger = LoggerFactory.getLogger(ResultController.class);
+
+
 	@GetMapping("/result")
 	public ResponseEntity<?> checkResultNew(
 	        @RequestParam("regNo") String regNo,
@@ -78,8 +87,11 @@ public class ResultController {
 
 		System.out.println("<--Hit-->");
 
-	    // CAPTCHA validation (only here)
-	    if (!validateCaptcha(session, captcha)) {
+		logger.info("INFO Text");
+		logger.error("ERROR Text");
+
+		// CAPTCHA validation (only here)
+	    if (!validateCaptchaGarnet(session, captcha)) {
 	        return ResponseEntity.ok(
 	            Map.of("success", false, "message", "Invalid CAPTCHA...!!!")
 	        );
@@ -294,7 +306,29 @@ public class ResultController {
 		}
 		return resp;
 	}
-	
+
+
+	public boolean validateCaptchaGarnet(HttpSession session, String input) {
+
+		String sessionId = session.getId();
+
+		String key = "CAPTCHA:" + sessionId;
+
+		String storedCaptcha = redisTemplate.opsForValue().get(key);
+
+		if (storedCaptcha == null) {
+			return false;
+		}
+
+		boolean valid = storedCaptcha.equalsIgnoreCase(input);
+
+		if (valid) {
+			redisTemplate.delete(key); // one-time use
+		}
+
+		return valid;
+	}
+
 	
 	private boolean validateCaptcha(HttpSession session, String captcha) {
 	    String sessionCaptcha = (String) session.getAttribute("captcha");

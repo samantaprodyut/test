@@ -1,5 +1,7 @@
 package com.iimj.resultportal.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,6 +35,10 @@ public class AdminController {
 	private final CandidateStatusService candidateStatusService;
 	private final CandidateImportService candidateImportService;
 	private final CandidateCacheService candidateCacheService;
+
+	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
+
+
 
 	@Autowired
 	CandidateRepository candidateRepository;
