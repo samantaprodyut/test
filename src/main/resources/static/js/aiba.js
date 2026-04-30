@@ -82,9 +82,16 @@ document.addEventListener("DOMContentLoaded", function() {
 				        <tr>
 				            <th>Registered Email ID</th>
 				            <td>${data.candidate.email || '-'}</td>
-				            <th>Status</th>
-				            <td>${data.candidate.status.name || '-'}</td>
+				            <th>Gender</th>
+				            <td>${data.candidate.sex || '-'}</td>
 				        </tr>
+				        
+				        <tr>
+                            <th>Status</th>
+                            <td>${data.candidate.status.name || '-'}</td>
+                            <th>Date of Birth</th>
+				            <td>${data.candidate.dob || '-'}</td>
+                        </tr>
 				    </table>
 				</div>
 
@@ -97,7 +104,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 switch (data.candidate.status.id) {
 
-                    case 1:
+                    case 41:
                         html += `
                     
                         <p>Congratulations!</p>
@@ -155,7 +162,7 @@ document.addEventListener("DOMContentLoaded", function() {
     `;
                         break;
 
-                    case 2:
+                    case 42:
                         html += `
                          <h5 class="mb-3">MBA (AI & BA) 2026–28: Admission Status</h5>
 
@@ -235,25 +242,25 @@ document.addEventListener("DOMContentLoaded", function() {
                          `;
                         break;
 
-                    case 3:
+                    case 43:
 
                         html += `
 						<p>We have received your term- 1 fee for MBA (AI & BA) 2026 program.</p>
 						`;
                         break;
-                    case 4: html += ` 
+                    case 44: html += ` 
 							<p> Your provisional admission offer has expired. </p> 
 							`;
                         break;
 
-                    case 5: html += ` <p> To be used if required. </p> `;
+                    case 45: html += ` <p> To be used if required. </p> `;
                         break;
 
-                    case 6: html += ` <p> To be used if required. </p> `;
+                    case 46: html += ` <p> To be used if required. </p> `;
                         break;
 
 
-                    case 7:
+                    case 47:
                         html += `
                             <h5 class="mb-3">MBA (AI & BA) 2026–28: Admission Status</h5>
                         
@@ -266,7 +273,7 @@ document.addEventListener("DOMContentLoaded", function() {
                             <p>Please address all queries regarding admissions to <b>admissions@iimj.ac.in</b></p>
                          `;
                         break;
-                    case 8:
+                    case 48:
                         html += `
                         <h5 class="mb-3">MBA (AI & BA) 2026–28: Admission Status</h5>
                     
@@ -304,7 +311,7 @@ document.addEventListener("DOMContentLoaded", function() {
     `;
                         break;
 
-                    case 9:
+                    case 49:
                         html += `
                         <h5 class="mb-3">MBA (AI & BA) 2026–28: Admission Status</h5>
                     

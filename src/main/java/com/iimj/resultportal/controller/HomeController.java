@@ -30,14 +30,14 @@ public class HomeController {
     @Value("${recaptcha.site.key}")
 	    private String siteKey;
 	
-    @GetMapping("/")
+    @GetMapping("/mba")
     public String index(Model model) {
         model.addAttribute("siteKey", siteKey);
 
         return "index"; // Thymeleaf will look for templates/index.html
     }
     
-    @GetMapping("/mba-hahm")
+    @GetMapping("/mba-hc")
     public String mbaHahm(Model model) {
         model.addAttribute("siteKey", siteKey);
 

@@ -82,9 +82,16 @@ document.addEventListener("DOMContentLoaded", function() {
 				        <tr>
 				            <th>Registered Email ID</th>
 				            <td>${data.candidate.email || '-'}</td>
-				            <th>Status</th>
-				            <td>${data.candidate.status.name || '-'}</td>
+				            <th>Gender</th>
+				            <td>${data.candidate.sex || '-'}</td>
 				        </tr>
+				        
+				        <tr>
+                            <th>Status</th>
+                            <td>${data.candidate.status.name || '-'}</td>
+                            <th>Date of Birth</th>
+				            <td>${data.candidate.dob || '-'}</td>
+                        </tr>
 				    </table>
 				</div>
 

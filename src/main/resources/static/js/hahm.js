@@ -82,9 +82,16 @@ document.addEventListener("DOMContentLoaded", function() {
 				        <tr>
 				            <th>Registered Email ID</th>
 				            <td>${data.candidate.email || '-'}</td>
-				            <th>Status</th>
-				            <td>${data.candidate.status.name || '-'}</td>
+				            <th>Gender</th>
+				            <td>${data.candidate.sex || '-'}</td>
 				        </tr>
+				        
+				         <tr>
+                            <th>Status</th>
+                            <td>${data.candidate.status.name || '-'}</td>
+                            <th>Date of Birth</th>
+				            <td>${data.candidate.dob || '-'}</td>
+                        </tr>
 				    </table>
 				</div>
 
@@ -97,7 +104,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 switch (data.candidate.status.id) {
 
-                    case 1:
+                    case 21:
                         //   if (data.isPaid) {
                         //        content = `
                         //         <div class="alert alert-success text-center">
@@ -162,7 +169,7 @@ document.addEventListener("DOMContentLoaded", function() {
                             `;
                         break;
 
-                    case 2:
+                    case 22:
                         html += `
                         <h5 class="mb-3">MBA (Healthcare) 2026–28: Admission Status</h5>
 
@@ -242,25 +249,25 @@ document.addEventListener("DOMContentLoaded", function() {
                         `;
                         break;
 
-                    case 3:
+                    case 23:
 
                         html += `
 						<p>We have received your term- 1 fee for MBA (HC) 2026 program.</p>
 						`;
                         break;
-                    case 4: html += ` 
+                    case 24: html += ` 
 							<p> Your provisional admission offer has expired. </p> 
 							`;
                         break;
 
-                    case 5: html += ` <p> To be used if required. </p> `;
+                    case 25: html += ` <p> To be used if required. </p> `;
                         break;
 
-                    case 6: html += ` <p> To be used if required. </p> `;
+                    case 26: html += ` <p> To be used if required. </p> `;
                         break;
 
 
-                    case 7:
+                    case 27:
 
                         html += `
 						<p>
@@ -283,7 +290,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 						`;
                         break;
-                    case 8:
+                    case 28:
 
                         if (data.isPaid) {
 
@@ -331,7 +338,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         }
                         break;
 
-                    case 9:
+                    case 29:
 
                         html += `
 						<p>We have received your EOI fee for MBA (HC) Program, Batch 2026-28.
