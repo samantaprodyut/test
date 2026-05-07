@@ -8,6 +8,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.iimj.resultportal.entity.*;
+import com.iimj.resultportal.repository.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,19 +25,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.iimj.resultportal.entity.CandidateStatus;
-import com.iimj.resultportal.entity.Candidates;
-import com.iimj.resultportal.entity.CandidatesAIBA;
-import com.iimj.resultportal.entity.CandidatesHAHM;
-import com.iimj.resultportal.entity.Payment;
-import com.iimj.resultportal.entity.PaymentAIBA;
-import com.iimj.resultportal.entity.PaymentHAHM;
-import com.iimj.resultportal.repository.CandidateAIBARepository;
-import com.iimj.resultportal.repository.CandidateHAHMRepository;
-import com.iimj.resultportal.repository.CandidateRepository;
-import com.iimj.resultportal.repository.PaymentAIBARepository;
-import com.iimj.resultportal.repository.PaymentHAHMRepository;
-import com.iimj.resultportal.repository.PaymentRepository;
 import com.iimj.resultportal.service.CandidateCacheService;
 import com.iimj.resultportal.service.CandidateService;
 import com.iimj.resultportal.service.CaptchaService;
@@ -56,6 +45,9 @@ public class ResultController {
 	private CandidateAIBARepository candidateAIBARepository;
 
 	@Autowired
+	private CandidateIPMRepository candidateIPMRepository;
+
+	@Autowired
 	private PaymentRepository paymentRepository;
 	
 	@Autowired
@@ -63,6 +55,10 @@ public class ResultController {
 	
 	@Autowired
 	private PaymentAIBARepository paymentAIBARepository;
+
+
+	@Autowired
+	private PaymentIPMRepository paymentIPMRepository;
 
 	@Autowired
 	private CandidateCacheService candidateCacheService;
@@ -106,7 +102,9 @@ public class ResultController {
 	        result = getHAHMDetails(regNo, email, dob); 
 	    } else if ("AIBA".equalsIgnoreCase(type)) {
 	        result = getAIBADetails(regNo, email, dob); 
-	    } else {
+	    } else if ("IPM".equalsIgnoreCase(type)) {
+			result = getIPMDetails(regNo, email, dob);
+		} else {
 	        return ResponseEntity.badRequest()
 	                .body(Map.of("success", false, "message", "Invalid type"));
 	    }
@@ -175,6 +173,25 @@ public class ResultController {
 	        "message", "Candidate details found"
 	    );
 	}
+
+	private Map<String, Object> getIPMDetails(String regNo, String email, String dob) {
+
+		CandidatesIPM c = candidateCacheService.getIPM(regNo, email, LocalDate.parse(dob));
+
+
+		if (Objects.isNull(c)) {
+			return Map.of(
+					"success", false,
+					"message", "Candidate not found"
+			);
+		}
+
+		return Map.of(
+				"success", true,
+				"candidate", c,
+				"message", "Candidate details found"
+		);
+	}
 	
 	
 	// Submit manual payment
@@ -194,9 +211,49 @@ public class ResultController {
 			resp = postPayHAHM(regNo, email, dob, trxId, bankName, amount);
 		} else if ("AIBA".equalsIgnoreCase(type)) {
 			resp = postPayAIBA(regNo, email, dob, trxId, bankName, amount);
+		} else if ("IPM".equalsIgnoreCase(type)) {
+			resp = postPayIPM(regNo, email, dob, trxId, bankName, amount);
 		}
 		return ResponseEntity.ok(resp);
 	}
+
+
+	private Map<String, Object> postPayIPM(String regNo, String email, String dob, String trxId, String bankName,
+	                                        Double amount) {
+		CandidatesIPM c = candidateCacheService.getIPM(regNo, email, LocalDate.parse(dob));
+
+		Map<String, Object> resp = new HashMap<>();
+
+		if (!Objects.isNull(c)) {
+			// Save payment
+			PaymentIPM payment = new PaymentIPM();
+			payment.setCandidate(c);
+			payment.setCandidateRegId(c.getRegistrationNo());
+			payment.setTrxId(trxId);
+			payment.setBankName(bankName);
+			payment.setAmount(BigDecimal.valueOf(amount));
+			paymentIPMRepository.save(payment);
+
+			// Update candidate
+			c.setIsPaid(true);
+			c.setCandidateCurrentStatus("102");
+			CandidatesIPM updatedCandidate = candidateIPMRepository.save(c);
+
+			// Update the cache by removing the old and updating the new
+			updateIPMCache(updatedCandidate);
+			resp.put("candidate", c);
+			resp.put("success", true);
+			resp.put("fullName", c.getFullName());
+			resp.put("message",
+					"Dear " + c.getFullName() + ", Your payment details are submitted, subject to verification.");
+		} else {
+			resp.put("success", false);
+			resp.put("fullName", regNo);
+			resp.put("message", "Candidate not found, payment cannot be recorded.");
+		}
+		return resp;
+	}
+
 
 	private Map<String, Object> postPayAIBA(String regNo, String email, String dob, String trxId, String bankName,
 			Double amount) {
@@ -365,6 +422,16 @@ public class ResultController {
 		
 		candidateCacheService.removeAIBA(c);
 		candidateCacheService.updateAIBA(c);
+	}
+
+
+	/*
+	 * Method to update the cache post payment for IPM.
+	 */
+	private void updateIPMCache(CandidatesIPM c) {
+
+		candidateCacheService.removeIPM(c);
+		candidateCacheService.updateIPM(c);
 	}
 	
 }

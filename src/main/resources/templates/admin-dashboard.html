@@ -32,13 +32,18 @@
         <li class="nav-item">
             <a class="nav-link"
                th:classappend="${selectedType == 'HAHM'} ? 'active'"
-               th:href="@{/admin/dashboard(type='HAHM')}">HAHM</a>
+               th:href="@{/admin/dashboard(type='HAHM')}">HC</a>
         </li>
         <li class="nav-item">
             <a class="nav-link"
                th:classappend="${selectedType == 'AIBA'} ? 'active'"
                th:href="@{/admin/dashboard(type='AIBA')}">AIBA</a>
         </li>
+		<li class="nav-item">
+			<a class="nav-link"
+		       th:classappend="${selectedType == 'IPM'} ? 'active'"
+		       th:href="@{/admin/dashboard(type='IPM')}">IPM</a>
+		</li>
     </ul>
 
     <!-- 🔷 SEARCH + UPLOAD -->

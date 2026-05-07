@@ -51,6 +51,14 @@ public class HomeController {
 
         return "aiba"; // Thymeleaf will look for templates/aiba.html
     }
+
+
+    @GetMapping("/ipm")
+    public String ipm(Model model) {
+        model.addAttribute("siteKey", siteKey);
+
+        return "ipm"; // Thymeleaf will look for templates/aiba.html
+    }
     
     @GetMapping("/captcha")
     @ResponseBody

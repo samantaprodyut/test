@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.iimj.resultportal.controller.AdminController;
+import com.iimj.resultportal.entity.CandidatesIPM;
+import com.iimj.resultportal.repository.CandidateIPMRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +28,8 @@ public class CandidateCacheService {
 	 private final Map<String, Candidates> cache = new ConcurrentHashMap<>();
 	 private final Map<String, CandidatesHAHM> cacheHAHM = new ConcurrentHashMap<>();
 	 private final Map<String, CandidatesAIBA> cacheAIBA = new ConcurrentHashMap<>();
-	 private static final Logger logger = LoggerFactory.getLogger(CandidateCacheService.class);
+	private final Map<String, CandidatesIPM> cacheIPM = new ConcurrentHashMap<>();
+	private static final Logger logger = LoggerFactory.getLogger(CandidateCacheService.class);
 
 
 	    @Autowired
@@ -38,6 +41,9 @@ public class CandidateCacheService {
 	    @Autowired
 	    private CandidateAIBARepository aibaRepository;
 
+		@Autowired
+		private CandidateIPMRepository ipmRepository;
+
 	    @PostConstruct
 	    public void loadCache() {
 	        long start = System.currentTimeMillis();
@@ -46,6 +52,7 @@ public class CandidateCacheService {
 	        List<Candidates> list = repository.findAll();
 	        List<CandidatesHAHM> listHAHM = hahmRepository.findAll();
 	        List<CandidatesAIBA> listAIBA = aibaRepository.findAll();
+			List<CandidatesIPM> listIPM = ipmRepository.findAll();
 
 
 	        for (Candidates c : list) {
@@ -64,12 +71,19 @@ public class CandidateCacheService {
 	            cacheAIBA.put(key, c);
 	        }
 
+			for (CandidatesIPM c : listIPM) {
+				String key = buildKey(c.getRegistrationNo(), c.getEmail(), c.getDob());
+				cacheIPM.put(key, c);
+			}
+
 	        long end = System.currentTimeMillis();
 
 			logger.info("Cache MBA loaded: {} records in {} ms", cache.size(), (end - start));
 			logger.info("Cache HAHM loaded: {} records in {} ms", cacheHAHM.size(), (end - start));
 			logger.info("Cache AIBA loaded: {} records in {} ms", cacheAIBA.size(), (end - start));
-	    }
+			logger.info("Cache IPM loaded: {} records in {} ms", cacheIPM.size(), (end - start));
+
+		}
 
 	    // ---------- Fetch Candidates----------
 	    public Candidates get(String regNo, String email, LocalDate dob) {
@@ -120,6 +134,22 @@ public class CandidateCacheService {
 	        String key = buildKey(c.getRegistrationNo(), c.getEmail(), c.getDob());
 	        cacheAIBA.remove(key);
 	    }
+
+		// ---------- Fetch CandidatesIPM----------
+		public CandidatesIPM getIPM(String regNo, String email, LocalDate dob) {
+			return cacheIPM.get(buildKey(regNo, email, dob));
+		}
+
+		// ---------- Update CandidatesIPM----------
+		public void updateIPM(CandidatesIPM c) {
+			String key = buildKey(c.getRegistrationNo(), c.getEmail(), c.getDob());
+			cacheIPM.put(key, c);
+		}
+		// ---------- Remove CandidatesIPM----------
+		public void removeIPM(CandidatesIPM c) {
+			String key = buildKey(c.getRegistrationNo(), c.getEmail(), c.getDob());
+			cacheIPM.remove(key);
+		}
 	    
 	    // ---------- Key Builder ----------
 	    private String buildKey(String regNo, String email, LocalDate dob) {

@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.iimj.resultportal.controller.AdminController;
+import com.iimj.resultportal.entity.*;
+import com.iimj.resultportal.repository.*;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.slf4j.Logger;
@@ -16,19 +18,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.iimj.resultportal.entity.CandidateStatus;
-import com.iimj.resultportal.entity.CandidateStatusAIBA;
-import com.iimj.resultportal.entity.CandidateStatusHAHM;
-import com.iimj.resultportal.entity.Candidates;
-import com.iimj.resultportal.entity.CandidatesAIBA;
-import com.iimj.resultportal.entity.CandidatesHAHM;
-import com.iimj.resultportal.repository.CandidateAIBARepository;
-import com.iimj.resultportal.repository.CandidateHAHMRepository;
-import com.iimj.resultportal.repository.CandidateRepository;
-import com.iimj.resultportal.repository.CandidateStatusAIBARepository;
-import com.iimj.resultportal.repository.CandidateStatusHAHMRepository;
-import com.iimj.resultportal.repository.CandidateStatusRepository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -45,10 +34,12 @@ public class CandidateImportService {
 	private final CandidateRepository candidateRepository;
 	private final CandidateHAHMRepository candidateHAHMRepository;
 	private final CandidateAIBARepository candidateAIBARepository;
+	private final CandidateIPMRepository candidateIPMRepository;
 
 	private final CandidateStatusRepository candidateStatusRepository;
 	private final CandidateStatusHAHMRepository candidateStatusHAHMRepository;
 	private final CandidateStatusAIBARepository candidateStatusAIBARepository;
+	private final CandidateStatusIPMRepository candidateStatusIPMRepository;
 
 
 	public CandidateImportService(CandidateRepository candidateRepository,
@@ -56,7 +47,9 @@ public class CandidateImportService {
 			CandidateStatusHAHMRepository candidateStatusHAHMRepository,
 			CandidateHAHMRepository candidateHAHMRepository,
 			CandidateAIBARepository candidateAIBARepository,
-			CandidateStatusAIBARepository candidateStatusAIBARepository) {
+			CandidateStatusAIBARepository candidateStatusAIBARepository,
+            CandidateIPMRepository candidateIPMRepository,
+            CandidateStatusIPMRepository candidateStatusIPMRepository) {
 
 		this.candidateRepository = candidateRepository;
 		this.candidateStatusRepository = candidateStatusRepository;
@@ -64,6 +57,8 @@ public class CandidateImportService {
 		this.candidateHAHMRepository = candidateHAHMRepository;
 		this.candidateAIBARepository=candidateAIBARepository;
 		this.candidateStatusAIBARepository=candidateStatusAIBARepository;
+		this.candidateIPMRepository=candidateIPMRepository;
+		this.candidateStatusIPMRepository=candidateStatusIPMRepository;
 	}
 
 	@Transactional
@@ -127,7 +122,7 @@ public class CandidateImportService {
 			// ========================= HAHM =========================
 			else if ("HAHM".equalsIgnoreCase(type)) {
 
-				candidateHAHMRepository.deleteAllInBatch();
+				candidateHAHMRepository.truncateTable();
 
 				Map<Integer, CandidateStatusHAHM> statusMap = candidateStatusHAHMRepository.findAll().stream()
 						.collect(Collectors.toMap(CandidateStatusHAHM::getId, s -> s));
@@ -166,7 +161,48 @@ public class CandidateImportService {
 
 				flushHAHM(batchList);
 			}
-			
+			// ========================= IPM =========================
+			else if ("IPM".equalsIgnoreCase(type)) {
+
+				candidateIPMRepository.truncateTable();
+
+				Map<Integer, CandidateStatusIPM> statusMap = candidateStatusIPMRepository.findAll().stream()
+						.collect(Collectors.toMap(CandidateStatusIPM::getId, s -> s));
+
+				List<CandidatesIPM> batchList = new ArrayList<>(BATCH_SIZE);
+
+				for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+
+					Row row = sheet.getRow(i);
+					if (row == null)
+						continue;
+
+					try {
+						CandidatesIPM c = mapIPM(row, formatter);
+
+						String statusStr = getCellValue(row, 8, formatter);
+						if (!statusStr.isEmpty()) {
+							CandidateStatusIPM status = statusMap.get(Integer.valueOf(statusStr));
+							if (status == null) {
+								throw new IllegalArgumentException("Invalid status: " + statusStr);
+							}
+							c.setStatus(status);
+						}
+
+						batchList.add(c);
+						processed++;
+
+						if (batchList.size() == BATCH_SIZE) {
+							flushIPM(batchList);
+						}
+
+					} catch (Exception ex) {
+						logger.error("Error at row " + (i + 1) + ": {}",ex.getMessage());
+					}
+				}
+
+				flushIPM(batchList);
+			}
 			// ========================= AIBA =========================
 
 			else if ("AIBA".equalsIgnoreCase(type)) {
@@ -266,8 +302,33 @@ public class CandidateImportService {
 
 		return c;
 	}
-	
-	
+
+	// ===================== IPM MAPPER =====================
+	private CandidatesIPM mapIPM(Row row, DataFormatter formatter) {
+
+		CandidatesIPM c = new CandidatesIPM();
+
+		c.setRegistrationNo(getCellValue(row, 0, formatter));
+		c.setEmail(getCellValue(row, 1, formatter));
+		c.setFullName(getCellValue(row, 2, formatter));
+		c.setSex(getCellValue(row, 3, formatter));
+		c.setCategory(getCellValue(row, 4, formatter));
+		c.setDob(getDateCellValue(row, 5));
+
+		c.setAmountDue(BigDecimal.valueOf(500));
+		c.setPaymentDeadline("2026-01-01");
+		c.setIsPaid(false);
+
+		c.setPwd("1".equalsIgnoreCase(getCellValue(row, 6, formatter)));
+
+		LocalDate uploadDate = getDateCellValue(row, 7);
+		c.setUploadDate(uploadDate != null ? uploadDate.toString() : null);
+
+		c.setMobileNumber(getCellValue(row, 9, formatter));
+		c.setWaitingListNo(getCellValue(row, 10, formatter));
+
+		return c;
+	}
 	// ===================== AIBA MAPPER =====================
 		private CandidatesAIBA mapAIBA(Row row, DataFormatter formatter) {
 
@@ -312,6 +373,16 @@ public class CandidateImportService {
 
 		candidateHAHMRepository.saveAll(batchList);
 		candidateHAHMRepository.flush();
+		entityManager.clear();
+		batchList.clear();
+	}
+
+	private void flushIPM(List<CandidatesIPM> batchList) {
+		if (batchList.isEmpty())
+			return;
+
+		candidateIPMRepository.saveAll(batchList);
+		candidateIPMRepository.flush();
 		entityManager.clear();
 		batchList.clear();
 	}

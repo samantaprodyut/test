@@ -1,5 +1,6 @@
 package com.iimj.resultportal.controller;
 
+import com.iimj.resultportal.repository.CandidateIPMRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,9 @@ public class AdminController {
 	@Autowired
 	CandidateAIBARepository candidateAIBARepository;
 
+	@Autowired
+	CandidateIPMRepository candidateIPMRepository;
+
 	public AdminController(CandidateService candidateService, CandidateStatusService candidateStatusService,
 			CandidateImportService candidateImportService, CandidateCacheService candidateCacheService) {
 		this.candidateService = candidateService;
@@ -93,6 +97,10 @@ public class AdminController {
 
 			page = candidateAIBARepository.findByRegistrationNoContainingIgnoreCaseOrFullNameContainingIgnoreCase(keyword,
 					keyword, pageable);
+		}  else if ("IPM".equalsIgnoreCase(type.trim())) {
+
+			page = candidateIPMRepository.findByRegistrationNoContainingIgnoreCaseOrFullNameContainingIgnoreCase(keyword,
+					keyword, pageable);
 		}  else {
 
 			page = candidateRepository.findByRegistrationNoContainingIgnoreCaseOrFullNameContainingIgnoreCase(keyword,
@@ -136,7 +144,7 @@ public class AdminController {
 		// process Excel and assign type to each record
 		try {
 			
-			Thread.sleep(3000);
+//			Thread.sleep(3000);
 			candidateImportService.importFromExcel(file, type);
 			
 			//Refresh the cache
