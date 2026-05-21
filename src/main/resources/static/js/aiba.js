@@ -106,60 +106,92 @@ document.addEventListener("DOMContentLoaded", function() {
 
                     case 41:
                         html += `
-                    
-                        <p>Congratulations!</p>
-                    
-                        <p>With reference to your application for admission to IIM Jammu, we are pleased to
-                        inform you that you have been selected for admission in the first year of the Master
-                        of Business Administration (AI & BA) (MBA (AI & BA)) <b>2026-28</b> of IIM Jammu commencing from <b>July 2026</b>.</p>
-                    
-                        <p>You are required to pay the Offer Acceptance Amount of <b>INR 50,000/-</b> through online
-                        portal latest by <b>5:30 PM by May’ 2026</b>, failing which the offer will stand
-                        withdrawn. This amount will be adjusted against the fee payable by you for the first
-                        term of the programme.</p>
-                    
-                        <p>If you subsequently wish to withdraw from the offer within the withdrawal date (dd/mm/yyyy) specified by
-                        the Institute, the Offer Acceptance Amount will be refunded after deducting <b>Rs. 1,000</b>
-                        as processing charges (the refund of offer fee will be made to the same account source through which the payment was made via transaction reversal process only after the admission cycle for <b>2026</b> is over, tentatively by <b>September 2026</b>). The candidate can withdraw the offer by <b>5:30 PM on 19th June 2026</b>.
-                        If a candidate applies for withdrawal after the date specified by the Institute, no
-                        refund will be admissible.</p>
-                    
-                        <p>Your admission will be valid subject to your fulfilling the eligibility conditions stipulated
-                        in the <b>CAT-2025 Bulletin</b> and any other conditions conveyed to you through our
-                        website communication or other means. You have been offered provisional
-                        admission on the basis of the information provided by you, which is subject to
-                        verification of original educational transcripts, work experience certificates and category certificate (if applicable) at the
-                        time of registration. If at any stage, any information provided by you is found incorrect
-                        or false, your admission will be cancelled with immediate effect.</p>
-                    
-                        <p>You need to read the following instructions carefully and follow the steps accordingly
-                        to complete the acceptance process.</p>
-                    
-                        <p>Visit the link to make the payment of the Offer Acceptance Amount of <b>INR 50,000/-</b>
-                        (please do not close the IIM Jammu login page): Click for Payment
-                        Click for Payment MBA (AI & BA)</p>
-                    
-                        <p>The page is an exclusive page of J&K Bank for payment of IIM Jammu fee.
-                        You will have to select “Offer Acceptance Deposit” from the scroll down and enter
-                        the captcha and press the Continue button to get to the next page (The Payment
-                        Page).</p>
-                    
-                        <p>Provide the information as provided on the CAT Application Form on the payment
-                        page followed by the submit button.</p>
-                    
-                        <p>Follow the payment instructions on the page and complete the payment process.
-                        You need to save the receipt generated for your records. It will contain a receipt
-                        number which would be required to complete the offer acceptance process.</p>
-                    
-                        <p>Post the payment, please go back to IIM Jammu login window and provide the
-                        receipt number and click on the submit button.</p>
-                    
-                        <p>For additional queries/ withdrawal of the acceptance, please write to <b>admissions@iimj.ac.in</b></p>
-                    
-                        <p>For update information, you may visit our website <b>http://www.iimj.ac.in/</b>.</p>
-                    
-                        <p><b>We look forward to having you with us at IIM Jammu.</b></p>
-    `;
+                    <p><b>Congratulations!</b></p>
+
+						    <p>
+						    With reference to your application for admission to IIM Jammu, we are pleased to
+						    inform you that you have been selected for admission in the first year of the <b>Master
+						    of Business Administration (AI & BA) 2026-28 </b> of IIM Jammu commencing from July
+						    2026.
+						    </p>
+
+						    <p>
+						    You are required to pay the Offer Acceptance Amount of <b>INR 50,000/-</b> through online
+						    portal latest by <b>5:30 PM by 19 May 2026</b>, failing which the offer will stand
+						    withdrawn. This amount will be adjusted against the fee payable by you for the first
+						    term of the programme.
+						    </p>
+
+						    <p>
+						    If you subsequently wish to withdraw from the offer within the withdrawal date (by 5:30 PM, 21 June 2026), the Offer Acceptance Amount will be refunded after deducting Rs. 1,000
+						    as processing charges (the refund of offer fee will be made to the same account source through which the payment was made via transaction reversal process only after the admission cycle for 2026 is over, tentatively by September 2026). 
+						    If a candidate applies for withdrawal after the specified date, no
+						    refund will be admissible.
+						    </p>
+
+						    <p>
+						    Your admission is provisional, and will be valid subject to your fulfilling the eligibility conditions stipulated
+						    in the CAT-2025 Bulletin and any other conditions conveyed to you through our
+						    website communication or other means. You have been offered provisional
+						    admission on the basis of the information provided by you, which is subject to
+						    verification of original educational transcripts, work experience certificates and category certificate (if applicable) at the
+						    time of registration. If at any stage, any information provided by you is found incorrect
+						    or false, your admission will be cancelled with immediate effect.
+						    </p>
+
+						    <p>
+						    You need to read the following instructions carefully and follow the steps accordingly
+						    to complete the acceptance process.
+						    </p>
+
+						    <ul>
+						        <li>
+						        Visit the link to make the payment of the Offer Acceptance Amount of INR 50,000/-:
+						        
+						        
+						        <a href="https://ecollect.jkbank.com/_DirectMerController?instid=G047&mercid=409bc94dd7372c50b8f72df42679b166834b636258e573bc264ef682e149bab9" target="_blank" rel="noopener noreferrer">
+                                <b>Click for Payment</b>
+                                </a>							    
+                            
+							</p>
+                            
+							<p>
+						       
+						     </li>
+                                <li>Please select  the dropdown from the payment link and choose  <b>'MBA-AIBA Offer Acceptance Deposit 2026-28'</b> to pay. Payment made for any other programme will not be adjusted against this programme.</li>
+						        <li>
+						        The page is an exclusive page of J&K Bank for payment of IIM Jammu fee.
+						        </li>
+
+						        <li>
+						        Provide the information as provided on the CAT Application Form on the payment
+						        page followed by the submit button.
+						        </li>
+
+						        <li>
+						        Follow the payment instructions on the page and complete the payment process.
+						        You need to save the receipt generated for your records. It will contain a receipt
+						        number which would be required to complete the offer acceptance process. No separate confirmation via email will be provided.
+						        </li>
+
+						         <li>
+						        Also note, for Term-1 Fee Payment, the payment deadline will be <b>8:59 PM, 25 May 2026</b>. You are advised to make necessary provision for the same.
+						        In case a candidate deposits the Term-1 Fee without depositing Offer Acceptance Fee, this admission offer stands withdrawn.
+						        </li>
+
+						        <li>
+						        For additional queries/ withdrawal of the acceptance, please write to <b>mba_aiba.admissions@iimj.ac.in</b>.
+						        </li>
+						    </ul>
+
+						    <p>
+						    For update information, you may visit our website http://www.iimj.ac.in/.
+						    </p>
+
+						    <p>
+						    We look forward to having you with us at IIM Jammu.
+						    </p>
+                        `;
                         break;
 
                     case 42:
@@ -256,34 +288,39 @@ document.addEventListener("DOMContentLoaded", function() {
                     case 45: html += ` <p> To be used if required. </p> `;
                         break;
 
-                    case 46: html += ` <p> To be used if required. </p> `;
+                    case 46: html += ` <p> Thank you for your interest, we regret to inform you that you are not selected for the further admission process. </p> `;
                         break;
 
 
                     case 47:
                         html += `
-                            <h5 class="mb-3">MBA (AI & BA) 2026–28: Admission Status</h5>
                         
-                            <p>You have been <b>wait listed</b> for the IIM Jammu <b>MBA (AI & BA) 2026 programme</b>. IIM Jammu will come up with another merit list after the offer acceptance date of the declared merit list.</p>
+                            <p>You have been <b>waitlisted</b> for the IIM Jammu <b>MBA (AI & BA) 2026 programme</b>. IIM Jammu will come up with another merit list after the offer acceptance date of the declared merit list.</p>
                         
-                            <p><b>Admissions Office,<br>IIM Jammu</b></p>
-                        
+                                                   
                             <p><b>Note:</b> The next merit list may or may not be released. The wait list doesn’t indicate in any way that the admission offer will be made to the candidate. The movement of wait listed candidate to merit list depends on the number of seats and the decline of provisional admissions offer by the selected candidates.</p>
                         
-                            <p>Please address all queries regarding admissions to <b>admissions@iimj.ac.in</b></p>
+                            <p>Please address all queries regarding admissions to <b>mba_aiba.admissions@iimj.ac.in</b></p>
                          `;
                         break;
                     case 48:
                         html += `
-                        <h5 class="mb-3">MBA (AI & BA) 2026–28: Admission Status</h5>
                     
                         <p>We are pleased to let you know that you are in the <b>advanced waitlist</b> for the Admission to Master of Business Administration Programme (AI & BA) (MBA (AI & BA)) of Indian Institute of Management Jammu, Batch <b>2026-28</b>, subject to the fulfilment of all the eligibility criteria. It may be noted that IIM Jammu is merely inviting your interest in taking admission into the MBA (AI & BA) program of IIM Jammu and shouldn’t be viewed as an offer of admission. You will get a formal provisional admission offer from IIM Jammu only if candidates above you in our admission merit list withdraw or don’t avail admission offer of IIM Jammu.</p>
                     
-                        <p>Please confirm your acceptance of this <b>EOI</b> immediately by paying the EOI fees of <b>Rs. 10,000/-</b> latest by <b>5:30 PM, 14th May 2026</b>. Your EOI will be accepted only on receipt of the EOI fee of <b>Rs. 10,000/-</b> through the online payment link given below:</p>
+                        <p>Please confirm your acceptance of this <b>EOI</b> immediately by paying the EOI fees of <b>Rs. 10,000/-</b> latest by <b>5:30 PM, 13th May 2026</b>. Your EOI will be accepted only on receipt of the EOI fee of <b>Rs. 10,000/-</b> through the online payment link given below:</p>
                     
-                        <p><b>PAYMENT LINK</b></p>
+                        <p>
+                        
+                        <a href="https://ecollect.jkbank.com/_DirectMerController?instid=G047&mercid=409bc94dd7372c50b8f72df42679b166834b636258e573bc264ef682e149bab9" target="_blank" rel="noopener noreferrer">
+                                <b>Click for Payment</b>
+                            </a>							    
+                            
+							</p>
+                            <p>Please select  the dropdown from the payment link and choose  <b>'MBA - AIBA Advanced Waitlist EOI 2026-28'</b> to pay. Payment made for any other programme will not be adjusted against this programme.</p>
+							
                     
-                        <p>Failing to pay EOI fees, this EOI offer will automatically stand withdrawn without any further communication to you, and your name will be further removed from the waitlist. The entire WL-EOI fees of <b>Rs. 10,000/-</b> will be refunded.</p>
+                        <p>Failing to pay EOI fees, this EOI offer will automatically stand withdrawn without any further communication to you, and your name will be further removed from the waitlist. The entire EOI fees of <b>Rs. 10,000/-</b> will be refunded.</p>
                     
                         <p><b>Terms and conditions of Expression of Interest (EOI) will be as given below.</b></p>
                     
@@ -307,17 +344,20 @@ document.addEventListener("DOMContentLoaded", function() {
                     
                         <p>Once the candidate deposits <b>INR 50,000</b> (in addition to <b>INR 10,000</b>) towards the offer acceptance fee, the prevailing offer withdrawal policy would be applicable similar to other candidates.</p>
                     
-                        <p>In case of any clarifications, please reply to us over email at <b>MBA (AI & BA).admissions@iimj.ac.in</b>.</p>
+                        <p>In case of any clarifications, please reply to us over email at <b>mba_aiba.admissions@iimj.ac.in</b>.</p>
     `;
                         break;
 
                     case 49:
                         html += `
-                        <h5 class="mb-3">MBA (AI & BA) 2026–28: Admission Status</h5>
                     
                         <p>We have received your <b>EOI fee</b> for <b>MBA (AI & BA) Program, Batch 2026-28</b>.</p>
                     
-                        <p>You will get a formal provisional admission offer from IIM Jammu only if candidates above you in our admission merit list withdraw or don’t avail admission offer of IIM Jammu.</p>
+                  <p>
+						    You will get a formal provisional admission offer only if candidates above you in our admission merit
+						    list withdraw or don’t avail admission offer of IIM Jammu.
+						</p>
+                    
     `;
                         break;
 

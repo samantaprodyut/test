@@ -117,27 +117,27 @@ document.addEventListener("DOMContentLoaded", function() {
 
 						    <p>
 						    With reference to your application for admission to IIM Jammu, we are pleased to
-						    inform you that you have been selected for admission in the first year of the Master
-						    of Business Administration (MBA) 2026-28 of IIM Jammu commencing from July
+						    inform you that you have been selected for admission in the first year of the <b>Master
+						    of Business Administration (MBA) 2026-28 </b> of IIM Jammu commencing from July
 						    2026.
 						    </p>
 
 						    <p>
-						    You are required to pay the Offer Acceptance Amount of INR 50,000/- through online
-						    portal latest by 5:30 PM by May’ 2026, failing which the offer will stand
+						    You are required to pay the Offer Acceptance Amount of <b>INR 50,000/-</b> through online
+						    portal latest by <b>5:30 PM by 19 May 2026</b>, failing which the offer will stand
 						    withdrawn. This amount will be adjusted against the fee payable by you for the first
 						    term of the programme.
 						    </p>
 
 						    <p>
-						    If you subsequently wish to withdraw from the offer within the withdrawal date (dd/mm/yyyy) specified by
-						    the Institute, the Offer Acceptance Amount will be refunded after deducting Rs. 1,000
-						    as processing charges (the refund of offer fee will be made to the same account source through which the payment was made via transaction reversal process only after the admission cycle for 2026 is over, tentatively by September 2026). The candidate can withdraw the offer by 5:30 PM on 19th June 2026. If a candidate applies for withdrawal after the date specified by the Institute, no
+						    If you subsequently wish to withdraw from the offer within the withdrawal date (by 5:30 PM, 21 June 2026), the Offer Acceptance Amount will be refunded after deducting Rs. 1,000
+						    as processing charges (the refund of offer fee will be made to the same account source through which the payment was made via transaction reversal process only after the admission cycle for 2026 is over, tentatively by September 2026). 
+						    If a candidate applies for withdrawal after the specified date, no
 						    refund will be admissible.
 						    </p>
 
 						    <p>
-						    Your admission will be valid subject to your fulfilling the eligibility conditions stipulated
+						    Your admission is provisional, and will be valid subject to your fulfilling the eligibility conditions stipulated
 						    in the CAT-2025 Bulletin and any other conditions conveyed to you through our
 						    website communication or other means. You have been offered provisional
 						    admission on the basis of the information provided by you, which is subject to
@@ -153,19 +153,21 @@ document.addEventListener("DOMContentLoaded", function() {
 
 						    <ul>
 						        <li>
-						        Visit the link to make the payment of the Offer Acceptance Amount of INR 50,000/- (please do not close the IIM Jammu login page):
-						        <br>
-						        <a href="/payment-link" target="_blank"><b>Click for Payment</b></a>
+						        Visit the link to make the payment of the Offer Acceptance Amount of INR 50,000/-:
+						        
+						        
+						        <a href="https://ecollect.jkbank.com/_DirectMerController?instid=G047&mercid=409bc94dd7372c50b8f72df42679b166834b636258e573bc264ef682e149bab9" target="_blank" rel="noopener noreferrer">
+                                <b>Click for Payment</b>
+                                </a>							    
+                            
+							</p>
+                            
+							<p>
 						       
-						        </li>
-
+						     </li>
+                                <li>Please select  the dropdown from the payment link and choose  <b>'MBA Offer Acceptance Deposit 2026-28'</b> to pay. Payment made for any other programme will not be adjusted against this programme.</li>
 						        <li>
 						        The page is an exclusive page of J&K Bank for payment of IIM Jammu fee.
-						        </li>
-
-						        <li>
-						        You will have to select “Offer Acceptance Deposit” from the scroll down and enter
-						        the captcha and press the Continue button to get to the next page (The Payment Page).
 						        </li>
 
 						        <li>
@@ -176,16 +178,16 @@ document.addEventListener("DOMContentLoaded", function() {
 						        <li>
 						        Follow the payment instructions on the page and complete the payment process.
 						        You need to save the receipt generated for your records. It will contain a receipt
-						        number which would be required to complete the offer acceptance process.
+						        number which would be required to complete the offer acceptance process. No separate confirmation via email will be provided.
+						        </li>
+
+						         <li>
+						        Also note, for Term-1 Fee Payment, the payment deadline will be <b>8:59 PM, 25 May 2026</b>. You are advised to make necessary provision for the same.
+						        In case a candidate deposits the Term-1 Fee without depositing Offer Acceptance Fee, this admission offer stands withdrawn.
 						        </li>
 
 						        <li>
-						        Post the payment, please go back to IIM Jammu login window and provide the
-						        receipt number and click on the submit button.
-						        </li>
-
-						        <li>
-						        For additional queries/ withdrawal of the acceptance, please write to admissions@iimj.ac.in
+						        For additional queries/ withdrawal of the acceptance, please write to <b>mba.admissions@iimj.ac.in</b>.
 						        </li>
 						    </ul>
 
@@ -281,7 +283,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     case 5: html += ` <p> To be used if required. </p> `;
                         break;
 
-                    case 6: html += ` <p> To be used if required. </p> `;
+                    case 6: html += ` <p> Thank you for your interest, we regret to inform you that you are not selected for the further admission process. </p> `;
                         break;
 
 
@@ -294,17 +296,12 @@ document.addEventListener("DOMContentLoaded", function() {
 						</p>
 
 						<p>
-						    Admissions Office,<br />
-						    IIM Jammu
-						</p>
-
-						<p>
 						    <b>Note:</b> The next merit list may or may not be released. The wait list doesn’t indicate in any way that the
 						    admission offer will be made to the candidate. The movement of wait listed candidate to merit list depends on the
 						    number of seats and the decline of provisional admissions offer by the selected candidates.
 						</p>
 
-						<p>Please address all queries regarding admissions to admissions@iimj.ac.in</p>
+						<p>Please address all queries regarding admissions to mba.admissions@iimj.ac.in</p>
 
 						`;
                         break;
@@ -324,15 +321,19 @@ document.addEventListener("DOMContentLoaded", function() {
 							</p>
 
 							<p>
-							Please confirm your acceptance of this EOI immediately by paying the EOI fees of Rs. 10,000/- latest by 5:30 PM, 14th May 2026. Your EOI will be accepted only on receipt of the EOI fee of Rs. 10,000/- through the online payment link given below:
+							Please confirm your acceptance of this EOI immediately by paying the EOI fees of Rs. 10,000/- latest by <b>5:30 PM, 13th May 2026</b>. Your EOI will be accepted only on receipt of the EOI fee of Rs. 10,000/- through the online payment link given below:
 							</p>
 
 							<p>
-							    <a href="/payment-link" target="_blank"><b>PAYMENT LINK</b></a>
+							
+                            <a href="https://ecollect.jkbank.com/_DirectMerController?instid=G047&mercid=409bc94dd7372c50b8f72df42679b166834b636258e573bc264ef682e149bab9" target="_blank" rel="noopener noreferrer">
+                                <b>Click for Payment</b>
+                            </a>							    
+                            
 							</p>
-
+                            <p>Please select  the dropdown from the payment link and choose  <b>'MBA Advanced Waitlist EOI Deposit 2026-28'</b> to pay. Payment made for any other programme will not be adjusted against this programme.</p>
 							<p>
-							Failing to pay EOI fees, this EOI offer will automatically stand withdrawn without any further communication to you, and your name will be further removed from the waitlist. The entire WL-EOI fees of Rs. 10,000/- will be refunded.
+							Failing to pay EOI fees, this EOI offer will automatically stand withdrawn without any further communication to you, and your name will be further removed from the waitlist. The entire EOI fees of Rs. 10,000/- will be refunded.
 							</p>
 
 							<p>
@@ -374,7 +375,7 @@ document.addEventListener("DOMContentLoaded", function() {
 						<p>We have received your EOI fee for MBA Program, Batch 2026-28.</p>
 
 						<p>
-						    You will get a formal provisional admission offer from IIM Jammu only if candidates above you in our admission merit
+						    You will get a formal provisional admission offer only if candidates above you in our admission merit
 						    list withdraw or don’t avail admission offer of IIM Jammu.
 						</p>
 						`;
@@ -398,7 +399,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 			    <p style="font-size:12px; color:gray;">
 			        Disclaimer: This electronically generated information does not have any legal sanctity.
-			        In case of discrepancy, final records will prevail.
+			        In case of discrepancy, final records will prevail. The decision of the Institute will be final in this regard.
 			    </p>
 
 			</div>
