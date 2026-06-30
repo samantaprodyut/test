@@ -35,21 +35,25 @@ public class CandidateImportService {
 	private final CandidateHAHMRepository candidateHAHMRepository;
 	private final CandidateAIBARepository candidateAIBARepository;
 	private final CandidateIPMRepository candidateIPMRepository;
+	private final CandidateEBBARepository candidateEBBARepository;
 
 	private final CandidateStatusRepository candidateStatusRepository;
 	private final CandidateStatusHAHMRepository candidateStatusHAHMRepository;
 	private final CandidateStatusAIBARepository candidateStatusAIBARepository;
 	private final CandidateStatusIPMRepository candidateStatusIPMRepository;
+	private final CandidateStatusEBBARepository candidateStatusEBBARepository;
 
 
 	public CandidateImportService(CandidateRepository candidateRepository,
-			CandidateStatusRepository candidateStatusRepository,
-			CandidateStatusHAHMRepository candidateStatusHAHMRepository,
-			CandidateHAHMRepository candidateHAHMRepository,
-			CandidateAIBARepository candidateAIBARepository,
-			CandidateStatusAIBARepository candidateStatusAIBARepository,
-            CandidateIPMRepository candidateIPMRepository,
-            CandidateStatusIPMRepository candidateStatusIPMRepository) {
+                                  CandidateStatusRepository candidateStatusRepository,
+                                  CandidateStatusHAHMRepository candidateStatusHAHMRepository,
+                                  CandidateHAHMRepository candidateHAHMRepository,
+                                  CandidateAIBARepository candidateAIBARepository,
+                                  CandidateStatusAIBARepository candidateStatusAIBARepository,
+                                  CandidateIPMRepository candidateIPMRepository, CandidateEBBARepository candidateEBBARepository,
+                                  CandidateStatusIPMRepository candidateStatusIPMRepository,
+                                  CandidateStatusEBBARepository candidateStatusEBBARepository) {
+
 
 		this.candidateRepository = candidateRepository;
 		this.candidateStatusRepository = candidateStatusRepository;
@@ -58,7 +62,9 @@ public class CandidateImportService {
 		this.candidateAIBARepository=candidateAIBARepository;
 		this.candidateStatusAIBARepository=candidateStatusAIBARepository;
 		this.candidateIPMRepository=candidateIPMRepository;
-		this.candidateStatusIPMRepository=candidateStatusIPMRepository;
+        this.candidateEBBARepository = candidateEBBARepository;
+        this.candidateStatusIPMRepository=candidateStatusIPMRepository;
+		this.candidateStatusEBBARepository=candidateStatusEBBARepository;
 	}
 
 	@Transactional
@@ -160,6 +166,49 @@ public class CandidateImportService {
 				}
 
 				flushHAHM(batchList);
+			}
+
+			// ========================= EBBA =========================
+			else if ("EBBA".equalsIgnoreCase(type)) {
+
+				candidateEBBARepository.truncateTable();
+
+				Map<Integer, CandidateStatusEBBA> statusMap = candidateStatusEBBARepository.findAll().stream()
+						.collect(Collectors.toMap(CandidateStatusEBBA::getId, s -> s));
+
+				List<CandidatesEBBA> batchList = new ArrayList<>(BATCH_SIZE);
+
+				for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+
+					Row row = sheet.getRow(i);
+					if (row == null)
+						continue;
+
+					try {
+						CandidatesEBBA c = mapEBBA(row, formatter);
+
+						String statusStr = getCellValue(row, 8, formatter);
+						if (!statusStr.isEmpty()) {
+							CandidateStatusEBBA status = statusMap.get(Integer.valueOf(statusStr));
+							if (status == null) {
+								throw new IllegalArgumentException("Invalid status: " + statusStr);
+							}
+							c.setStatus(status);
+						}
+
+						batchList.add(c);
+						processed++;
+
+						if (batchList.size() == BATCH_SIZE) {
+							flushEBBA(batchList);
+						}
+
+					} catch (Exception ex) {
+						logger.error("Error at row " + (i + 1) + ": {}",ex.getMessage());
+					}
+				}
+
+				flushEBBA(batchList);
 			}
 			// ========================= IPM =========================
 			else if ("IPM".equalsIgnoreCase(type)) {
@@ -329,6 +378,33 @@ public class CandidateImportService {
 
 		return c;
 	}
+
+	// ===================== EBBA MAPPER =====================
+	private CandidatesEBBA mapEBBA(Row row, DataFormatter formatter) {
+
+		CandidatesEBBA c = new CandidatesEBBA();
+
+		c.setRegistrationNo(getCellValue(row, 0, formatter));
+		c.setEmail(getCellValue(row, 1, formatter));
+		c.setFullName(getCellValue(row, 2, formatter));
+		c.setSex(getCellValue(row, 3, formatter));
+		c.setCategory(getCellValue(row, 4, formatter));
+		c.setDob(getDateCellValue(row, 5));
+
+		c.setAmountDue(BigDecimal.valueOf(500));
+		c.setPaymentDeadline("2026-01-01");
+		c.setIsPaid(false);
+
+		c.setPwd("1".equalsIgnoreCase(getCellValue(row, 6, formatter)));
+
+		LocalDate uploadDate = getDateCellValue(row, 7);
+		c.setUploadDate(uploadDate != null ? uploadDate.toString() : null);
+
+		c.setMobileNumber(getCellValue(row, 9, formatter));
+		c.setWaitingListNo(getCellValue(row, 10, formatter));
+
+		return c;
+	}
 	// ===================== AIBA MAPPER =====================
 		private CandidatesAIBA mapAIBA(Row row, DataFormatter formatter) {
 
@@ -383,6 +459,16 @@ public class CandidateImportService {
 
 		candidateIPMRepository.saveAll(batchList);
 		candidateIPMRepository.flush();
+		entityManager.clear();
+		batchList.clear();
+	}
+
+	private void flushEBBA(List<CandidatesEBBA> batchList) {
+		if (batchList.isEmpty())
+			return;
+
+		candidateEBBARepository.saveAll(batchList);
+		candidateEBBARepository.flush();
 		entityManager.clear();
 		batchList.clear();
 	}

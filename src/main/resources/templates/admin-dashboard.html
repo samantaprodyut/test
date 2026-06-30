@@ -44,6 +44,12 @@
 		       th:classappend="${selectedType == 'IPM'} ? 'active'"
 		       th:href="@{/admin/dashboard(type='IPM')}">IPM</a>
 		</li>
+
+		<li class="nav-item">
+			<a class="nav-link"
+		       th:classappend="${selectedType == 'EBBA'} ? 'active'"
+		       th:href="@{/admin/dashboard(type='EBBA')}">EBBA</a>
+		</li>
     </ul>
 
     <!-- 🔷 SEARCH + UPLOAD -->

@@ -117,16 +117,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
 						    <p>
 						    You are required to pay the Offer Acceptance Amount of <b>INR 50,000/-</b> through online
-						    portal latest by <b>5:30 PM by 19 May 2026</b>, failing which the offer will stand
+						    portal latest by <b>5:30 PM 25 June 2026</b>, failing which the offer will stand
 						    withdrawn. This amount will be adjusted against the fee payable by you for the first
 						    term of the programme.
 						    </p>
-
-						    <p>
-						    If you subsequently wish to withdraw from the offer within the withdrawal date (by 5:30 PM, 21 June 2026), the Offer Acceptance Amount will be refunded after deducting Rs. 1,000
-						    as processing charges (the refund of offer fee will be made to the same account source through which the payment was made via transaction reversal process only after the admission cycle for 2026 is over, tentatively by September 2026). 
-						    If a candidate applies for withdrawal after the specified date, no
-						    refund will be admissible.
+                              <p>
+						 Since the official date of withdrawal was 21st June 2026, hence no refund will be admissible if you apply for withdrawal after payment of offer/term 1 fee.
+						   
 						    </p>
 
 						    <p>
@@ -175,8 +172,20 @@ document.addEventListener("DOMContentLoaded", function() {
 						        </li>
 
 						         <li>
-						        Also note, for Term-1 Fee Payment, the payment deadline will be <b>8:59 PM, 25 May 2026</b>. You are advised to make necessary provision for the same.
+						        Also note, for Term-1 Fee Payment, the payment deadline will be <b>8:59 PM, 29 June 2026</b>. You are advised to proceed with payment of term 1 fee accordingly.
 						        In case a candidate deposits the Term-1 Fee without depositing Offer Acceptance Fee, this admission offer stands withdrawn.
+						       
+						           <br>
+						        Visit the link to make the payment of the term 1 fee Amount of INR 3,79,126/-:
+						        
+						        
+						        <a href="https://ecollect.jkbank.com/_DirectMerController?instid=G047&mercid=409bc94dd7372c50b8f72df42679b166834b636258e573bc264ef682e149bab9" target="_blank" rel="noopener noreferrer">
+                                <b>Click for Payment</b>
+                                </a>	
+                                
+                                <br>
+                                Please select the dropdown from the payment link and choose <b>'MBA-AIBA Term I fees and Caution Deposit- AY 2026-28'</b> to pay. Payment made for any other programme will not be adjusted against this programme.
+						       
 						        </li>
 
 						        <li>
@@ -196,81 +205,73 @@ document.addEventListener("DOMContentLoaded", function() {
 
                     case 42:
                         html += `
-                         <h5 class="mb-3">MBA (AI & BA) 2026–28: Admission Status</h5>
+                         <div>
+						    <p><b>Greetings from IIM Jammu!</b></p>
 
-                        <p><b>Greetings from IIM Jammu!</b></p>
-                        
-                        <p>
-                           With reference to your provisional admission offer for MBA (AI & BA) and
-                           subsequent payment of the Offer Acceptance fee for MBA (AI & BA)
-                           <b>Rs. 50,000/-</b>, the registration will take place in the month of
-                           <b>July 2026</b>. You are, therefore, advised to follow the instruction given
-                           below:
-                        </p>
-                        
-                        <ol>
-                           <li>
-                              <b>First Term Fees Payment:</b> First Term Fee for MBA (AI & BA) is
-                              <b>Rs. _____________</b> plus caution deposit of <b>Rs. 20,000</b>. You
-                              are required to deposit the balance amount <b>Rs. XXXXXXX</b> (after
-                              adjusting acceptance fee of <b>Rs. 50,000/-</b>) as Term 1 Fee on or
-                              before <b>May 21st, 2026, 05:30 PM</b>.
-                           </li>
-                        
-                           <li>
-                              <b>Online Payment:</b> Check the payment link at the admission Portal and
-                              proceed for the payment (Click on the link named:
-                              <b>MBA (AI & BA) Term-I Fees and Caution Deposit -AY 2025-27</b>).
-                           </li>
-                        
-                           <li>
-                              <b>Automatic Cancellation:</b> If you fail to make online payment before
-                              <b>5:30 pm, 21st May 2026</b>, your provisional admission offer shall
-                              automatically stand cancelled.
-                           </li>
-                        
-                           <li>
-                              <b>Registration:</b> Registration for the Term - 1 will take place in
-                              <b>July 2026</b>. The list of documents/certificate required at the time
-                              of registration will be shared after the payment of Term-1 fee (Keep the
-                              original copy with you for physical verification).
-                           </li>
-                        
-                           <li>
-                              <b>Loan facility:</b> List of Banks, who provide educational loan to the
-                              candidates, is available at:<br />
-                              <b>https://www.iimj.ac.in/MBA (AI & BA)-loan-facility.php</b><br />
-                              However, you are free to take loan from any bank. IIM Jammu has nothing to
-                              do with any bank for providing educational loan. This is between the
-                              candidate & Bank and IIM Jammu is not party to it.
-                           </li>
-                        
-                           <li>
-                              <b>Legal issues:</b> All disputes arising out of, or in respect of
-                              admissions to the MBA (AI & BA) programme shall be referred for the
-                              arbitration to the Director of IIM Jammu, or his nominee, whose decision
-                              shall be final and binding on the parties. All matters shall be subject to
-                              <b>Jammu jurisdiction only</b>.
-                           </li>
-                        
-                           <li>
-                              <b>Important:</b> This is a provisional admission subject to the physical
-                              verification of the documents submitted as per the eligibility criteria
-                              mentioned in IIM Jammu MBA (AI & BA) <b>2026-28</b> Admission Policy and
-                              <b>CAT 2025</b> / Ministry of Education, Govt. of India Guidelines.
-                           </li>
-                        </ol>
-                        
-                        <p>
-                           You may write to the admission office of IIM Jammu at
-                           <b>admissions@iimj.ac.in</b> for any clarification and assistance.
-                        </p>
-                        
-                        <p>
-                           Please ignore this mail if you initiated the process of Offer withdrawal or
-                           if you plan to withdraw the offer.
-                        </p>
+						    <p>
+						        With reference to your provisional admission offer for MBA(AI & BA) and subsequent payment of the Offer Acceptance fee
+						        for MBA Rs. 50,000/-, the registration will take place in the month of July 2026. You are, therefore, advised to
+						        follow the instruction given below:
+						    </p>
 
+						    <ol>
+						        <li>
+						            <b>First Term Fees Payment</b>: First Term Fee for MBA (AI & BA) is Rs. 3,79,126 plus caution deposit of Rs. 50,000. You
+						            are required to deposit the balance amount <b>Rs. 3,79,126</b> (after adjusting acceptance fee of Rs. 50,000/-) as
+						            Term 1 Fee on or before <b>17 June 2026, 08:59 PM</b>.
+						        </li>
+
+						        <li>
+						            <b>Online Payment</b>: Check the payment link at the admission Portal and proceed for the payment (Click on the
+						            link named: <b>MBA-AIBA Term-I Fees and Caution Deposit -AY 2026-28</b>).
+						        </li>
+                                <a href="https://ecollect.jkbank.com/_DirectMerController?instid=G047&mercid=409bc94dd7372c50b8f72df42679b166834b636258e573bc264ef682e149bab9" target="_blank" rel="noopener noreferrer">
+                                <b>Click for Payment</b>
+                                </a>
+						        <li>
+						            <b>Automatic Cancellation</b>: If you fail to make online payment before <b>17 June 2026, 08:59 PM</b>, your provisional
+						            admission offer shall automatically stand canceled.
+						        </li>
+
+						        <li>
+						            <b>Registration</b>: Registration for the Term - 1 will take place in July 2026 . The list of documents/certificate
+						            required at the time of registration will be shared after the payment of Term-1 fee (Keep the original copy
+						            with you for physical verification).
+						        </li>
+
+						        <li>
+						            <b>Loan facility</b>: List of Banks, who provide educational loan to the candidates, is available at 
+						             <a href="https://www.iimj.ac.in/mba-loan-facility.php" target="_blank" rel="noopener noreferrer">
+                                <b>https://www.iimj.ac.in/mba-loan-facility.php</b>
+                                </a>
+						            
+						            <br />
+						            However, you are free to take loan from any bank. IIM Jammu has nothing to do with any bank for providing
+						            educational loan. This is between the candidate & Bank and IIM Jammu is not party to it.
+						        </li>
+
+						        <li>
+						            <b>Legal issues</b>: All disputes arising out of, or in respect of admissions to the MBA (Healthcare) programme shall be
+						            referred for the arbitration to the Director of IIM Jammu, or his nominee, whose decision shall be final and
+						            binding on the parties. All matters shall be subject to Jammu jurisdiction only.
+						        </li>
+
+						        <li>
+						            <b>Important</b>: This is a provisional admission subject to the physical verification of the documents submitted
+						            as per the eligibility criteria mentioned in IIM Jammu MBA(AI & BA) 2026- 28 Admission Policy and CAT 2025 /Ministry
+						            of Education, Govt. of India Guidelines.
+						        </li>
+						    </ol>
+
+						    <p>
+						        You may write to the admission office of IIM Jammu at <b>mba_aiba.admissions@iimj.ac.in</b> for any clarification and
+						        assistance.
+						    </p>
+
+						    <p>
+						        Please ignore this mail if you initiated the process of Offer withdrawal or if you plan to withdraw the offer.
+						    </p>
+						</div>
                          `;
                         break;
 
@@ -308,7 +309,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     
                         <p>We are pleased to let you know that you are in the <b>advanced waitlist</b> for the Admission to Master of Business Administration Programme (AI & BA) (MBA (AI & BA)) of Indian Institute of Management Jammu, Batch <b>2026-28</b>, subject to the fulfilment of all the eligibility criteria. It may be noted that IIM Jammu is merely inviting your interest in taking admission into the MBA (AI & BA) program of IIM Jammu and shouldn’t be viewed as an offer of admission. You will get a formal provisional admission offer from IIM Jammu only if candidates above you in our admission merit list withdraw or don’t avail admission offer of IIM Jammu.</p>
                     
-                        <p>Please confirm your acceptance of this <b>EOI</b> immediately by paying the EOI fees of <b>Rs. 10,000/-</b> latest by <b>5:30 PM, 13th May 2026</b>. Your EOI will be accepted only on receipt of the EOI fee of <b>Rs. 10,000/-</b> through the online payment link given below:</p>
+                        <p>Please confirm your acceptance of this <b>EOI</b> immediately by paying the EOI fees of <b>Rs. 10,000/-</b> latest by <b>5:30 PM, 1 June 2026</b>. Your EOI will be accepted only on receipt of the EOI fee of <b>Rs. 10,000/-</b> through the online payment link given below:</p>
                     
                         <p>
                         

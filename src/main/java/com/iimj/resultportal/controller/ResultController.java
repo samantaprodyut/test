@@ -104,7 +104,9 @@ public class ResultController {
 	        result = getAIBADetails(regNo, email, dob); 
 	    } else if ("IPM".equalsIgnoreCase(type)) {
 			result = getIPMDetails(regNo, email, dob);
-		} else {
+		} else if ("EBBA".equalsIgnoreCase(type)) {
+			result = getEBBADetails(regNo, email, dob);
+		}else {
 	        return ResponseEntity.badRequest()
 	                .body(Map.of("success", false, "message", "Invalid type"));
 	    }
@@ -192,9 +194,28 @@ public class ResultController {
 				"message", "Candidate details found"
 		);
 	}
+
+	private Map<String, Object> getEBBADetails(String regNo, String email, String dob) {
+
+		CandidatesIPM c = candidateCacheService.getEBBA(regNo, email, LocalDate.parse(dob));
+
+
+		if (Objects.isNull(c)) {
+			return Map.of(
+					"success", false,
+					"message", "Candidate not found"
+			);
+		}
+
+		return Map.of(
+				"success", true,
+				"candidate", c,
+				"message", "Candidate details found"
+		);
+	}
 	
 	
-	// Submit manual payment
+	// Submit manual payment - NOT CURRENTLY USED
 	@PostMapping("/payment")
 	public ResponseEntity<Map<String, Object>> savePayment(@RequestBody Map<String, Object> payload) {
 		String regNo = (String) payload.get("registrationNo");
@@ -213,8 +234,47 @@ public class ResultController {
 			resp = postPayAIBA(regNo, email, dob, trxId, bankName, amount);
 		} else if ("IPM".equalsIgnoreCase(type)) {
 			resp = postPayIPM(regNo, email, dob, trxId, bankName, amount);
+		} else if ("EBBA".equalsIgnoreCase(type)) {
+			resp = postPayIPM(regNo, email, dob, trxId, bankName, amount);
 		}
 		return ResponseEntity.ok(resp);
+	}
+
+
+	private Map<String, Object> postPayEBBA(String regNo, String email, String dob, String trxId, String bankName,
+	                                       Double amount) {
+		CandidatesIPM c = candidateCacheService.getIPM(regNo, email, LocalDate.parse(dob));
+
+		Map<String, Object> resp = new HashMap<>();
+
+		if (!Objects.isNull(c)) {
+			// Save payment
+			PaymentIPM payment = new PaymentIPM();
+			payment.setCandidate(c);
+			payment.setCandidateRegId(c.getRegistrationNo());
+			payment.setTrxId(trxId);
+			payment.setBankName(bankName);
+			payment.setAmount(BigDecimal.valueOf(amount));
+			paymentIPMRepository.save(payment);
+
+			// Update candidate
+			c.setIsPaid(true);
+			c.setCandidateCurrentStatus("102");
+			CandidatesIPM updatedCandidate = candidateIPMRepository.save(c);
+
+			// Update the cache by removing the old and updating the new
+			updateIPMCache(updatedCandidate);
+			resp.put("candidate", c);
+			resp.put("success", true);
+			resp.put("fullName", c.getFullName());
+			resp.put("message",
+					"Dear " + c.getFullName() + ", Your payment details are submitted, subject to verification.");
+		} else {
+			resp.put("success", false);
+			resp.put("fullName", regNo);
+			resp.put("message", "Candidate not found, payment cannot be recorded.");
+		}
+		return resp;
 	}
 
 

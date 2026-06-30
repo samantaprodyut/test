@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const email = document.getElementById("email").value.trim();
         const dob = document.getElementById("dob").value;
         const captcha = document.getElementById("captchaInput").value.trim();
-        const type = 'HAHM';
+        const type = 'EBBA';
 
         if (!regNo || !email || !dob || !captcha) {
             showAlert("Please fill all fields");
@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			<div class="card shadow p-4 letter-container">
 
 			    <div class="text-center mb-3">
-			        <h5>MBA (Healthcare) 2026–28: Admission Offer Status</h5>
+			        <h5>MBA (AI & BA) 2026–28: Admission Offer Status</h5>
 			    </div>
 
 				<div class="mb-3">
@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function() {
 				            <td>${data.candidate.sex || '-'}</td>
 				        </tr>
 				        
-				         <tr>
+				        <tr>
                             <th>Status</th>
                             <td>${data.candidate.status.name || '-'}</td>
                             <th>Date of Birth</th>
@@ -104,21 +104,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 switch (data.candidate.status.id) {
 
-                    case 21:
-                        //   if (data.isPaid) {
-                        //        content = `
-                        //         <div class="alert alert-success text-center">
-                        //           Offer Acceptance Fee Submitted. Payment under verification.
-                        //     </div>`;
-                        // } 					else {
-                        //   }
-						 html += `
-                        <p><b>Congratulations!</b></p>
+                    case 41:
+                        html += `
+                    <p><b>Congratulations!</b></p>
 
 						    <p>
 						    With reference to your application for admission to IIM Jammu, we are pleased to
 						    inform you that you have been selected for admission in the first year of the <b>Master
-						    of Business Administration (Healthcare) 2026-28 </b> of IIM Jammu commencing from July
+						    of Business Administration (AI & BA) 2026-28 </b> of IIM Jammu commencing from July
 						    2026.
 						    </p>
 
@@ -128,8 +121,7 @@ document.addEventListener("DOMContentLoaded", function() {
 						    withdrawn. This amount will be adjusted against the fee payable by you for the first
 						    term of the programme.
 						    </p>
-
-						    <p>
+                              <p>
 						 Since the official date of withdrawal was 21st June 2026, hence no refund will be admissible if you apply for withdrawal after payment of offer/term 1 fee.
 						   
 						    </p>
@@ -163,7 +155,7 @@ document.addEventListener("DOMContentLoaded", function() {
 							<p>
 						       
 						     </li>
-                                <li>Please select  the dropdown from the payment link and choose  <b>'MBA Healthcare Offer Acceptance Deposit 2026-28'</b> to pay. Payment made for any other programme will not be adjusted against this programme.</li>
+                                <li>Please select  the dropdown from the payment link and choose  <b>'MBA-AIBA Offer Acceptance Deposit 2026-28'</b> to pay. Payment made for any other programme will not be adjusted against this programme.</li>
 						        <li>
 						        The page is an exclusive page of J&K Bank for payment of IIM Jammu fee.
 						        </li>
@@ -179,7 +171,7 @@ document.addEventListener("DOMContentLoaded", function() {
 						        number which would be required to complete the offer acceptance process. No separate confirmation via email will be provided.
 						        </li>
 
-						          <li>
+						         <li>
 						        Also note, for Term-1 Fee Payment, the payment deadline will be <b>8:59 PM, 29 June 2026</b>. You are advised to proceed with payment of term 1 fee accordingly.
 						        In case a candidate deposits the Term-1 Fee without depositing Offer Acceptance Fee, this admission offer stands withdrawn.
 						       
@@ -190,24 +182,19 @@ document.addEventListener("DOMContentLoaded", function() {
 						        <a href="https://ecollect.jkbank.com/_DirectMerController?instid=G047&mercid=409bc94dd7372c50b8f72df42679b166834b636258e573bc264ef682e149bab9" target="_blank" rel="noopener noreferrer">
                                 <b>Click for Payment</b>
                                 </a>	
-						       
-						            <br>
-                                Please select the dropdown from the payment link and choose <b>'MBA-Healthcare- Term I fees and Caution Deposit- AY 2026-28'</b> to pay. Payment made for any other programme will not be adjusted against this programme.
-						       
+                                
+                                <br>
+                                Please select the dropdown from the payment link and choose <b>'MBA-AIBA Term I fees and Caution Deposit- AY 2026-28'</b> to pay. Payment made for any other programme will not be adjusted against this programme.
 						       
 						        </li>
 
 						        <li>
-						        For additional queries/ withdrawal of the acceptance, please write to <b>mbahc.admissions@iimj.ac.in</b>.
+						        For additional queries/ withdrawal of the acceptance, please write to <b>mba_aiba.admissions@iimj.ac.in</b>.
 						        </li>
 						    </ul>
 
 						    <p>
-						    For update information, you may visit our website 
-						       <a href="https://www.iimj.ac.in/" target="_blank" rel="noopener noreferrer">
-                                <b>https://www.iimj.ac.in/</b>
-                                </a>
-						    .
+						    For update information, you may visit our website http://www.iimj.ac.in/.
 						    </p>
 
 						    <p>
@@ -216,34 +203,34 @@ document.addEventListener("DOMContentLoaded", function() {
                         `;
                         break;
 
-                    case 22:
+                    case 42:
                         html += `
-                       <div>
+                         <div>
 						    <p><b>Greetings from IIM Jammu!</b></p>
 
 						    <p>
-						        With reference to your provisional admission offer for MBA(Healthcare) and subsequent payment of the Offer Acceptance fee
+						        With reference to your provisional admission offer for MBA(AI & BA) and subsequent payment of the Offer Acceptance fee
 						        for MBA Rs. 50,000/-, the registration will take place in the month of July 2026. You are, therefore, advised to
 						        follow the instruction given below:
 						    </p>
 
 						    <ol>
 						        <li>
-						            <b>First Term Fees Payment</b>: First Term Fee for MBA (Healthcare) is Rs. 3,79,126 plus caution deposit of Rs. 50,000. You
+						            <b>First Term Fees Payment</b>: First Term Fee for MBA (AI & BA) is Rs. 3,79,126 plus caution deposit of Rs. 50,000. You
 						            are required to deposit the balance amount <b>Rs. 3,79,126</b> (after adjusting acceptance fee of Rs. 50,000/-) as
 						            Term 1 Fee on or before <b>17 June 2026, 08:59 PM</b>.
 						        </li>
 
 						        <li>
 						            <b>Online Payment</b>: Check the payment link at the admission Portal and proceed for the payment (Click on the
-						            link named: <b>MBA Healthcare Term-I Fees and Caution Deposit -AY 2026-28</b>).
+						            link named: <b>MBA-AIBA Term-I Fees and Caution Deposit -AY 2026-28</b>).
 						        </li>
                                 <a href="https://ecollect.jkbank.com/_DirectMerController?instid=G047&mercid=409bc94dd7372c50b8f72df42679b166834b636258e573bc264ef682e149bab9" target="_blank" rel="noopener noreferrer">
                                 <b>Click for Payment</b>
                                 </a>
 						        <li>
 						            <b>Automatic Cancellation</b>: If you fail to make online payment before <b>17 June 2026, 08:59 PM</b>, your provisional
-						            admission offer shall automatically stand cancelled.
+						            admission offer shall automatically stand canceled.
 						        </li>
 
 						        <li>
@@ -271,13 +258,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
 						        <li>
 						            <b>Important</b>: This is a provisional admission subject to the physical verification of the documents submitted
-						            as per the eligibility criteria mentioned in IIM Jammu MBA(Healthcare) 2026- 28 Admission Policy and CAT 2025 /Ministry
+						            as per the eligibility criteria mentioned in IIM Jammu MBA(AI & BA) 2026- 28 Admission Policy and CAT 2025 /Ministry
 						            of Education, Govt. of India Guidelines.
 						        </li>
 						    </ol>
 
 						    <p>
-						        You may write to the admission office of IIM Jammu at <b>mbahc.admissions@iimj.ac.in</b> for any clarification and
+						        You may write to the admission office of IIM Jammu at <b>mba_aiba.admissions@iimj.ac.in</b> for any clarification and
 						        assistance.
 						    </p>
 
@@ -285,111 +272,94 @@ document.addEventListener("DOMContentLoaded", function() {
 						        Please ignore this mail if you initiated the process of Offer withdrawal or if you plan to withdraw the offer.
 						    </p>
 						</div>
-                       `;
+                         `;
                         break;
 
-                    case 23:
+                    case 43:
 
                         html += `
-						<p>We have received your term- 1 fee for MBA (HC) 2026 program.</p>
+						<p>We have received your term- 1 fee for MBA (AI & BA) 2026 program.</p>
 						`;
                         break;
-                    case 24: html += ` 
+                    case 44: html += ` 
 							<p> Your provisional admission offer has expired. </p> 
 							`;
                         break;
 
-                    case 25: html += ` <p> To be used if required. </p> `;
+                    case 45: html += ` <p> To be used if required. </p> `;
                         break;
 
-                    case 26: html += ` <p> Thank you for your interest, we regret to inform you that you are not selected for the further admission process. </p> `;
+                    case 46: html += ` <p> Thank you for your interest, we regret to inform you that you are not selected for the further admission process. </p> `;
                         break;
 
 
-                    case 27:
-
+                    case 47:
                         html += `
-						<p>
-						    You have been wait listed for the IIM Jammu MBA (HC) 2026 programme. IIM Jammu will come up with another merit list after the offer acceptance date of the declared merit list.
-
-						</p>
-
-						<p>
-						    <b>Note:</b> The next merit list may or may not be released. The wait list doesn’t indicate in any way that the
-						    admission offer will be made to the candidate. The movement of wait listed candidate to merit list depends on the
-						    number of seats and the decline of provisional admissions offer by the selected candidates.
-						</p>
-
-						<p>Please address all queries regarding admissions to mbahc.admissions@iimj.ac.in</p>
-
-						`;
+                        
+                            <p>You have been <b>waitlisted</b> for the IIM Jammu <b>MBA (AI & BA) 2026 programme</b>. IIM Jammu will come up with another merit list after the offer acceptance date of the declared merit list.</p>
+                        
+                                                   
+                            <p><b>Note:</b> The next merit list may or may not be released. The wait list doesn’t indicate in any way that the admission offer will be made to the candidate. The movement of wait listed candidate to merit list depends on the number of seats and the decline of provisional admissions offer by the selected candidates.</p>
+                        
+                            <p>Please address all queries regarding admissions to <b>mba_aiba.admissions@iimj.ac.in</b></p>
+                         `;
                         break;
-                    case 28:
-
-                        if (data.isPaid) {
-
-                            html += `
-							<p>We have received your EOI fee for MBA Program, Batch 2026-28.</p>
-							`;
-                        } else {
-
-                            html += `
-
-                            <p>We are pleased to let you know that you are in the <b>advanced waitlist</b> for the Admission to Master of Business Administration Programme (Healthcare) (MBA (HC)) of Indian Institute of Management Jammu, Batch <b>2026-28</b>, subject to the fulfilment of all the eligibility criteria. It may be noted that IIM Jammu is merely inviting your interest in taking admission into the MBA (HC) program of IIM Jammu and shouldn’t be viewed as an offer of admission. You will get a formal provisional admission offer from IIM Jammu only if candidates above you in our admission merit list withdraw or don’t avail admission offer of IIM Jammu.</p>
+                    case 48:
+                        html += `
+                    
+                        <p>We are pleased to let you know that you are in the <b>advanced waitlist</b> for the Admission to Master of Business Administration Programme (AI & BA) (MBA (AI & BA)) of Indian Institute of Management Jammu, Batch <b>2026-28</b>, subject to the fulfilment of all the eligibility criteria. It may be noted that IIM Jammu is merely inviting your interest in taking admission into the MBA (AI & BA) program of IIM Jammu and shouldn’t be viewed as an offer of admission. You will get a formal provisional admission offer from IIM Jammu only if candidates above you in our admission merit list withdraw or don’t avail admission offer of IIM Jammu.</p>
+                    
+                        <p>Please confirm your acceptance of this <b>EOI</b> immediately by paying the EOI fees of <b>Rs. 10,000/-</b> latest by <b>5:30 PM, 1 June 2026</b>. Your EOI will be accepted only on receipt of the EOI fee of <b>Rs. 10,000/-</b> through the online payment link given below:</p>
+                    
+                        <p>
                         
-                            <p>Please confirm your acceptance of this <b>EOI</b> immediately by paying the EOI fees of <b>Rs. 10,000/-</b> latest by <b>5:30 PM, 1 June 2026</b>. Your EOI will be accepted only on receipt of the EOI fee of <b>Rs. 10,000/-</b> through the online payment link given below:</p>
-                        
-                             <a href="https://ecollect.jkbank.com/_DirectMerController?instid=G047&mercid=409bc94dd7372c50b8f72df42679b166834b636258e573bc264ef682e149bab9" target="_blank" rel="noopener noreferrer">
+                        <a href="https://ecollect.jkbank.com/_DirectMerController?instid=G047&mercid=409bc94dd7372c50b8f72df42679b166834b636258e573bc264ef682e149bab9" target="_blank" rel="noopener noreferrer">
                                 <b>Click for Payment</b>
                             </a>							    
                             
 							</p>
-                            <p>Please select  the dropdown from the payment link and choose  <b>'MBA - Healthcare Advanced Waitlist EOI 2026-28'</b> to pay. Payment made for any other programme will not be adjusted against this programme.</p>
+                            <p>Please select  the dropdown from the payment link and choose  <b>'MBA - AIBA Advanced Waitlist EOI 2026-28'</b> to pay. Payment made for any other programme will not be adjusted against this programme.</p>
 							
-                        
-                            <p>Failing to pay EOI fees, this EOI offer will automatically stand withdrawn without any further communication to you, and your name will be further removed from the waitlist. The entire EOI fees of <b>Rs. 10,000/-</b> will be refunded.</p>
-                        
-                            <p><b>Terms and conditions of Expression of Interest (EOI) will be as given below.</b></p>
-                        
-                            <ol>
-                                <li>Candidates who are in the waitlist will be asked to confirm the Expression of Interest (EoI) by accepting the EoI online and by depositing <b>INR 10,000</b>.</li>
-                        
-                                <li>Those who will not deposit the EoI amount will be removed from the Waitlist for further process.</li>
-                        
-                                <li>Candidates can ask for the removal from the Waitlist any time. The refund of <b>INR 10,000</b> will be made without any deduction. Once the candidate is removed from the waitlist, he/she cannot claim the waitlist position or offer in that list.</li>
-                        
-                                <li>As per the movement of the waitlist and vacancy, candidates (who have deposited <b>INR 10,000</b> as EoI amount) will be offered the provisional admission offer in the subsequent list.</li>
-                        
-                                <li>Under no circumstances, offers will be made to the candidates who have not accepted the EoI and not deposited <b>INR 10,000</b>.</li>
-                        
-                                <li>The candidate who has deposited <b>INR 10,000</b> as EoI amount and receives the provisional admission offer, will be asked to deposit <b>INR 50,000</b> as acceptance fee. This fee will be adjusted in the term I fee.</li>
-                        
-                                <li>If the candidate deposits <b>INR 50,000</b> (in addition to <b>INR 10,000</b>) and withdraws before due date <b>INR 59,000</b> will be refunded after deducting <b>INR 1,000</b>.</li>
-                        
-                                <li>The EOI fee will be refunded to the same account source through which the payment was made via transaction reversal process only after the admission cycle for <b>2026</b> is over (tentatively by <b>September 2026</b>).</li>
-                            </ol>
-                        
-                            <p>Once the candidate deposits <b>INR 50,000</b> (in addition to <b>INR 10,000</b>) towards the offer acceptance fee, the prevailing offer withdrawal policy would be applicable similar to other candidates.</p>
-                        
-                            <p>In case of any clarifications, please reply to us over email at <b>mbahc.admissions@iimj.ac.in</b>.</p>
-                            
-                            `;
-                        }
+                    
+                        <p>Failing to pay EOI fees, this EOI offer will automatically stand withdrawn without any further communication to you, and your name will be further removed from the waitlist. The entire EOI fees of <b>Rs. 10,000/-</b> will be refunded.</p>
+                    
+                        <p><b>Terms and conditions of Expression of Interest (EOI) will be as given below.</b></p>
+                    
+                        <ol>
+                            <li>Candidates who are in the waitlist will be asked to confirm the Expression of Interest (EoI) by accepting the EoI online and by depositing <b>INR 10,000</b>.</li>
+                    
+                            <li>Those who will not deposit the EoI amount will be removed from the Waitlist for further process.</li>
+                    
+                            <li>Candidates can ask for the removal from the Waitlist any time. The refund of <b>INR 10,000</b> will be made without any deduction. Once the candidate is removed from the waitlist, he/she cannot claim the waitlist position or offer in that list.</li>
+                    
+                            <li>As per the movement of the waitlist and vacancy, candidates (who have deposited <b>INR 10,000</b> as EoI amount) will be offered the provisional admission offer in the subsequent list.</li>
+                    
+                            <li>Under no circumstances, offers will be made to the candidates who have not accepted the EoI and not deposited <b>INR 10,000</b>.</li>
+                    
+                            <li>The candidate who has deposited <b>INR 10,000</b> as EoI amount and receives the provisional admission offer, will be asked to deposit <b>INR 50,000</b> as acceptance fee. This fee will be adjusted in the term I fee.</li>
+                    
+                            <li>If the candidate deposits <b>INR 50,000</b> (in addition to <b>INR 10,000</b>) and withdraws before due date <b>INR 59,000</b> will be refunded after deducting <b>INR 1,000</b>.</li>
+                    
+                            <li>The EOI fee will be refunded to the same account source through which the payment was made via transaction reversal process only after the admission cycle for <b>2026</b> is over (tentatively by <b>September 2026</b>).</li>
+                        </ol>
+                    
+                        <p>Once the candidate deposits <b>INR 50,000</b> (in addition to <b>INR 10,000</b>) towards the offer acceptance fee, the prevailing offer withdrawal policy would be applicable similar to other candidates.</p>
+                    
+                        <p>In case of any clarifications, please reply to us over email at <b>mba_aiba.admissions@iimj.ac.in</b>.</p>
+    `;
                         break;
 
-                    case 29:
-
+                    case 49:
                         html += `
-						<p>We have received your EOI fee for MBA (HC) Program, Batch 2026-28.
-                        </p>
-
-						<p>
+                    
+                        <p>We have received your <b>EOI fee</b> for <b>MBA (AI & BA) Program, Batch 2026-28</b>.</p>
+                    
+                  <p>
 						    You will get a formal provisional admission offer only if candidates above you in our admission merit
 						    list withdraw or don’t avail admission offer of IIM Jammu.
 						</p>
-
-						
-						`;
+                    
+    `;
                         break;
 
                     default:
@@ -410,7 +380,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 			    <p style="font-size:12px; color:gray;">
 			        Disclaimer: This electronically generated information does not have any legal sanctity.
-			        In case of discrepancy, final records will prevail. The decision of the Institute will be final in this regard.
+			        In case of discrepancy, final records will prevail.
 			    </p>
 
 			</div>
@@ -471,7 +441,7 @@ document.addEventListener("click", function(e) {
                 registrationNo: regNo,
                 email: email,
                 dob: dob,
-                type: "HAHM"
+                type: "AIBA"
 
             })
         })

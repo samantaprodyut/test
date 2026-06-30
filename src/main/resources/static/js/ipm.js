@@ -104,7 +104,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 switch (data.candidate.status.id) {
 
-                    case 41:
+                    case 71:
                         //   if (data.isPaid) {
                         //        content = `
                         //         <div class="alert alert-success text-center">
@@ -199,7 +199,7 @@ document.addEventListener("DOMContentLoaded", function() {
 					       `;
                         break;
 
-                    case 42:
+                    case 72:
                         html += ` 
 						<div>
 						    <p><b>Greetings from IIM Jammu!</b></p>
@@ -267,25 +267,25 @@ document.addEventListener("DOMContentLoaded", function() {
 						 `;
                         break;
 
-                    case 43:
+                    case 73:
 
                         html += `
 						<p>We have received your term- 1 fee for MBA 2026 program.</p>
 						`;
                         break;
-                    case 44: html += ` 
+                    case 74: html += ` 
 							<p> Your provisional admission offer has expired. </p> 
 							`;
                         break;
 
-                    case 45: html += ` <p> To be used if required. </p> `;
+                    case 75: html += ` <p> To be used if required. </p> `;
                         break;
 
-                    case 46: html += ` <p> To be used if required. </p> `;
+                    case 76: html += ` <p> To be used if required. </p> `;
                         break;
 
 
-                    case 47:
+                    case 77:
 
                         html += `
 						<p>
@@ -308,7 +308,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 						`;
                         break;
-                    case 48:
+                    case 78:
 
                         if (data.isPaid) {
 
@@ -368,7 +368,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         }
                         break;
 
-                    case 49:
+                    case 79:
 
                         html += `
 						<p>We have received your EOI fee for MBA Program, Batch 2026-28.</p>
