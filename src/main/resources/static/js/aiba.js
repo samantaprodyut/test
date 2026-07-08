@@ -117,7 +117,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 						    <p>
 						    You are required to pay the Offer Acceptance Amount of <b>INR 50,000/-</b> through online
-						    portal latest by <b>5:30 PM 25 June 2026</b>, failing which the offer will stand
+						    portal latest by <b>5:30 PM 09 July 2026</b>, failing which the offer will stand
 						    withdrawn. This amount will be adjusted against the fee payable by you for the first
 						    term of the programme.
 						    </p>
@@ -172,7 +172,7 @@ document.addEventListener("DOMContentLoaded", function() {
 						        </li>
 
 						         <li>
-						        Also note, for Term-1 Fee Payment, the payment deadline will be <b>8:59 PM, 29 June 2026</b>. You are advised to proceed with payment of term 1 fee accordingly.
+						        Also note, for Term-1 Fee Payment, the payment deadline will be <b>10 July 2026, 05:30 PM</b>. You are advised to proceed with payment of term 1 fee accordingly.
 						        In case a candidate deposits the Term-1 Fee without depositing Offer Acceptance Fee, this admission offer stands withdrawn.
 						       
 						           <br>
@@ -218,7 +218,7 @@ document.addEventListener("DOMContentLoaded", function() {
 						        <li>
 						            <b>First Term Fees Payment</b>: First Term Fee for MBA (AI & BA) is Rs. 3,79,126 plus caution deposit of Rs. 50,000. You
 						            are required to deposit the balance amount <b>Rs. 3,79,126</b> (after adjusting acceptance fee of Rs. 50,000/-) as
-						            Term 1 Fee on or before <b>17 June 2026, 08:59 PM</b>.
+						            Term 1 Fee on or before <b>10 July 2026, 05:30 PM</b>.
 						        </li>
 
 						        <li>
@@ -229,7 +229,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                 <b>Click for Payment</b>
                                 </a>
 						        <li>
-						            <b>Automatic Cancellation</b>: If you fail to make online payment before <b>17 June 2026, 08:59 PM</b>, your provisional
+						            <b>Automatic Cancellation</b>: If you fail to make online payment before <b>10 July 2026, 05:30 PM</b>, your provisional
 						            admission offer shall automatically stand canceled.
 						        </li>
 
